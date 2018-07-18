@@ -1,123 +1,145 @@
 package system.myBank.app;
 
 import java.awt.Color;
-import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.*;
 
-public class Administrator extends JFrame implements ActionListener{
+import system.myBank.app.PasswordStorage.CannotPerformOperationException;
+import system.myBank.app.PasswordStorage.InvalidHashException;
 
-    private JLabel lI,lID,pas,skip;
-    private JTextField tid;
-    private JPasswordField tpass;
-    private JButton bok;
-    private int enterValidN=0,enterValidNum=0,ok=0;
+enum Status {
+	VALID_NAME, VALID_PASSWORD, GRANTED, DENIED;
 
+}
 
+public class Administrator extends JFrame implements ActionListener {
+   // ResourceBundle RB_PAGEMAP = ResourceBundle.getBundle("test.check");
 
-    public Administrator(String title){
-        super(title);
-        Container c=getContentPane();
-        c.setLayout(new GridLayout(4,2));
+	private Status statusName, statusPassword, ok;
+	private JLabel logInlab, IDLab, passwordLab, skipLab;
+	private JTextField idField;
+	private JPasswordField passwordField;
+	private JButton okButton;
+	private Pattern pattern;
+	private Matcher matcher;
+	Administrator admin, admin1;
+	private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";// 123admin
+	private static final String PASSWORD_PATTERN = "((?=.*[a-z])(?=.*d)(?=.*[@#$%])(?=.*[A-Z]).{6,16})";// Howtodoinjava#
 
-        bok=new JButton("OK");
-        bok.addActionListener(this);
+	public Administrator(String title) {
+		super(title);
+		Container c = getContentPane();
+		c.setLayout(new GridLayout(4, 2));
 
-        
-        lI=new JLabel("Log In");
-      
-        lI.setForeground(Color.BLUE);
+		okButton = new JButton("OK");
+		okButton.addActionListener(this);
 
-       
-        lID=new JLabel("Login ID:");
-        
-        lID.setForeground(Color.BLACK);
-        tid=new JTextField(20);
+		logInlab = new JLabel("Log In");
 
-        pas=new JLabel("Password:");
-        
-        pas.setForeground(Color.BLACK);
-        tpass=new JPasswordField(20);
+		logInlab.setForeground(Color.BLUE);
 
-        skip=new JLabel("");
+		IDLab = new JLabel("Login ID:");
 
-        c.add(lI);c.add(new JLabel(""));
-        c.add(lID);c.add(tid);
-        c.add(pas);c.add(tpass);
-        c.add(skip);c.add(bok);
+		IDLab.setForeground(Color.BLACK);
+		idField = new JTextField(20);
 
-        setSize(450, 200);
-        setLocation(300,200);
-        setResizable(false);
+		passwordLab = new JLabel("Password:");
 
-        setVisible(true);
-    }
+		passwordLab.setForeground(Color.BLACK);
+		passwordField = new JPasswordField(20);
 
-    public void actionPerformed(ActionEvent ae)
-    {
-        if(ae.getSource()==bok) {
-            String id1 = tid.getText();
-            String pass1 = tpass.getText();
+		skipLab = new JLabel("");
 
-            if (id1.equals("admin") && pass1.equals("1234"))
-                do {
-                    String s1 = tid.getText();
-                    String reg = "^[a-zA-z0-9_@]";
-                    Scanner sc = new Scanner(s1);
-                    String result = sc.findInLine(reg);
+		c.add(logInlab);
+		c.add(new JLabel(""));
+		c.add(IDLab);
+		c.add(idField);
+		c.add(passwordLab);
+		c.add(passwordField);
+		c.add(skipLab);
+		c.add(okButton);
 
-                    if (result == null) {
-                        tid.setText("");
-                        JOptionPane.showMessageDialog(this, "Enter Valid Name..");
-                    } else {
-                        enterValidN = 1;
-                    }
+		setSize(450, 200);
+		setLocation(300, 200);
+		setResizable(false);
 
-                    String s2 = tpass.getText();
-                    String reg1 = "^[0-9]";
-                    Scanner sc1 = new Scanner(s2);
-                    String result1 = sc1.findInLine(reg1);
-                    if (result1 == null) {
-                        tpass.setText("");
-                        JOptionPane.showMessageDialog(this, "INVALID...");
-                    } else {
-                        enterValidNum = 1;
-                    }
+		setVisible(true);
+	}
 
-                    if (enterValidN == 1) {
-                        if (enterValidNum == 1) {
-                            ok = 1;
-                            break;
-                        }
-                    }
-                } while (ok == 1);
+	public void actionPerformed(ActionEvent ae) {
+		String hash;
+		if (ae.getSource() == okButton) {
+			do {
+				String id = idField.getText();
+				pattern = Pattern.compile(USERNAME_PATTERN);
+				boolean correctName = validate(id);
+				if (!correctName) {
+					idField.setText("");
+					JOptionPane.showMessageDialog(this, "Invalid name\nEnter Valid Name..");
+				} else {
+					statusName = Status.VALID_NAME;
+				}
 
-            if (ok == 1) {
-                   SignIn.accessGranted=true;
-                    new SignIn(" Signed as an Administrator ");
-                }
-			else
-                {
-                    JOptionPane.showMessageDialog(this, "Wrong user name or password please re enter");
-                    tpass.setText("");
-                    tid.setText(" ");
-                }
+				String password = String.valueOf(passwordField.getPassword());
+				pattern = Pattern.compile(PASSWORD_PATTERN);
+				boolean correctPassword = validate(password);
 
-            }
-        }
+				if (!correctPassword) {
+					passwordField.setText("");
+					JOptionPane.showMessageDialog(this, "INVALID...");
+				} else {
+					statusPassword = Status.VALID_PASSWORD;
+				}
 
+				if (statusName == Status.VALID_NAME && statusPassword == Status.VALID_PASSWORD) {
+					try {
+						hash = PasswordStorage.createHash(password);
+						System.out.println(hash);
+						if (!PasswordStorage.verifyPassword(password, hash)) {
+							JOptionPane.showMessageDialog(this, "FAILURE: GOOD PASSWORD NOT ACCEPTED!");
+							ok = Status.DENIED;
 
-    public static void main(String args[])
-    {
-        new Administrator("Administrator");
+						} else {
+							ok = Status.GRANTED;
 
-    }
+						}
+					} catch (CannotPerformOperationException | InvalidHashException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+			} while (ok == Status.GRANTED);
+
+			if (ok == Status.GRANTED) {
+				SignIn.accessGranted = true;
+				new SignIn(" Signed as an Administrator ");
+			} else {
+				JOptionPane.showMessageDialog(this, "Wrong user name or password please re enter");
+				passwordField.setText("");
+				idField.setText(" ");
+			}
+
+		}
+	}
+
+	public boolean validate(final String username) {
+
+		matcher = pattern.matcher(username);
+		return matcher.matches();
+
+	}
+
+	public static void main(String args[]) {
+		new Administrator("Administrator");
+
+	}
 
 }
