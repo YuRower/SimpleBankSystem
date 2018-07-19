@@ -111,7 +111,6 @@ public class Administrator extends JFrame implements ActionListener {
 
 						}
 					} catch (CannotPerformOperationException | InvalidHashException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 

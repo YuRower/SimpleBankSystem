@@ -2,7 +2,7 @@ package system.myBank.app;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -12,6 +12,7 @@ import system.myBank.ATM.ATM;
 import system.myBank.chat.ChatClient;
 import system.myBank.chat.server.ChatServer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class SignIn extends JFrame implements ActionListener {
@@ -22,16 +23,16 @@ public class SignIn extends JFrame implements ActionListener {
 	private final JMenuItem test;
 	private final JMenuItem atm;
 	private final JButton btnAtm;
-
+	private BufferedImage bg;
 	private final JMenuItem chat;
 	private final JMenuItem tchat;
 	private JPopupMenu popMenu = new JPopupMenu();
 	private final JMenu menuEdit;
-	private JPanel statusBar = new JPanel();
+	// private JPanel statusBar = new JPanel();
 	private JDesktopPane desktop = new JDesktopPane();
 
-	private final JMenuItem withdraw, history, transfer, deposit, create, info, delete, open, infor, dep, with, del,
-			draftt, tr;
+	private final JMenuItem withdraw, history, transfer, deposit, create, info, delete, open, infor, depositMoney,
+			withdrawMoney, delCustomer, draft, transferItem;
 	private JMenuBar bar;
 	private JButton btnChat;
 	private java.util.Date currDate = new java.util.Date();
@@ -47,12 +48,29 @@ public class SignIn extends JFrame implements ActionListener {
 
 	public SignIn(String title) {
 		super(title);
+		try {
+			bg = ImageIO.read(new File("background.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		JPanel statusBar = new JPanel() {
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+			}
+
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(600, 500);
+			}
+		};
 
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(9, 3));
 		bar = new JMenuBar();
 
-		setIconImage(getToolkit().getImage("background.jpg"));
 		setSize(700, 550);
 		setJMenuBar(bar);
 		addWindowListener(new WindowAdapter() {
@@ -132,17 +150,17 @@ public class SignIn extends JFrame implements ActionListener {
 		open.addActionListener(this);
 		infor = new JMenuItem("Info");
 		infor.addActionListener(this);
-		dep = new JMenuItem("Deposit Money");
-		dep.addActionListener(this);
-		with = new JMenuItem("Withdraw Money");
-		with.addActionListener(this);
-		del = new JMenuItem("Delete Customer");
-		del.addActionListener(this);
+		depositMoney = new JMenuItem("Deposit Money");
+		depositMoney.addActionListener(this);
+		withdrawMoney = new JMenuItem("Withdraw Money");
+		withdrawMoney.addActionListener(this);
+		delCustomer = new JMenuItem("Delete Customer");
+		delCustomer.addActionListener(this);
 
-		draftt = new JMenuItem("Draft");
-		draftt.addActionListener(this);
-		tr = new JMenuItem("Transfer");
-		tr.addActionListener(this);
+		draft = new JMenuItem("Draft");
+		draft.addActionListener(this);
+		transferItem = new JMenuItem("Transfer");
+		transferItem.addActionListener(this);
 		atm = new JMenuItem("atm");
 		atm.addActionListener(this);
 		tchat = new JMenuItem("chat");
@@ -150,12 +168,12 @@ public class SignIn extends JFrame implements ActionListener {
 
 		popMenu.add(open);
 		popMenu.add(infor);
-		popMenu.add(dep);
-		popMenu.add(with);
-		popMenu.add(del);
+		popMenu.add(depositMoney);
+		popMenu.add(withdrawMoney);
+		popMenu.add(delCustomer);
 
-		popMenu.add(draftt);
-		popMenu.add(tr);
+		popMenu.add(draft);
+		popMenu.add(transferItem);
 		popMenu.add(atm);
 		popMenu.add(tchat);
 
@@ -206,13 +224,19 @@ public class SignIn extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 
 		Object obj = ae.getSource();
-		if (obj == chat) {
+
+		getSourceMethod(obj);
+
+	}
+
+	public void getSourceMethod(Object marker) {
+		if (marker == chat) {
 
 			myChat = new ChatClient();
 			myChat.launchFrame();
 		}
 
-		else if (obj == test) {
+		else if (marker == test) {
 
 			java.awt.EventQueue.invokeLater(new Runnable() {
 				public void run() {
@@ -220,56 +244,51 @@ public class SignIn extends JFrame implements ActionListener {
 				}
 			});
 
-		} else if (obj == create) {
+		} else if (marker == create) {
 			new Register("Registration");
 		}
 
-		else if (obj == history) {
+		else if (marker == history) {
 			new HistoryTrans();
 		}
 
-		else if (obj == transfer) {
+		else if (marker == transfer) {
 			new Transfer("  Transfer");
 		}
 
-		else if (obj == deposit) {
+		else if (marker == deposit) {
 			new Deposit(" Deposit...");
 		}
 
-		else if (obj == withdraw) {
+		else if (marker == withdraw) {
 			new Withdraw(" withdraw...");
 		}
 
-		else if (obj == delete) {
+		else if (marker == delete) {
 			new DeleteAccount(" Delete Account...");
 		}
 
-		else if (obj == info) {
+		else if (marker == info) {
 			new CustomerInfo();
-		}
+		} else {
+			throw new RuntimeException("not Found");
 
+		}
 	}
 
 	private void quitApp() {
 
-		try {
+		int reply = JOptionPane.showConfirmDialog(this, "Are you really want to exit\nFrom BankSystem?",
+				"BankSystem - Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-			int reply = JOptionPane.showConfirmDialog(this, "Are you really want to exit\nFrom BankSystem?",
-					"BankSystem - Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-			if (reply == JOptionPane.YES_OPTION) {
-				setVisible(false);
-				dispose();
-				System.out.println("Thanks for Using BankSystem");
-				System.exit(0);
-			} else if (reply == JOptionPane.NO_OPTION) {
-				setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-			}
+		if (reply == JOptionPane.YES_OPTION) {
+			setVisible(false);
+			dispose();
+			System.out.println("Thanks for Using BankSystem");
+			System.exit(0);
+		} else if (reply == JOptionPane.NO_OPTION) {
+			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		}
-
-		catch (Exception e) {
-		}
-
 	}
 
 	public static void main(String args[]) {
