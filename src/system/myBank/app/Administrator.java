@@ -11,8 +11,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import system.myBank.app.PasswordStorage.CannotPerformOperationException;
-import system.myBank.app.PasswordStorage.InvalidHashException;
+import system.myBank.app.security.PasswordStorage;
+import system.myBank.app.security.PasswordStorage.CannotPerformOperationException;
+import system.myBank.app.security.PasswordStorage.InvalidHashException;
 
 enum Status {
 	VALID_NAME, VALID_PASSWORD, GRANTED, DENIED;
@@ -20,7 +21,6 @@ enum Status {
 }
 
 public class Administrator extends JFrame implements ActionListener {
-   // ResourceBundle RB_PAGEMAP = ResourceBundle.getBundle("test.check");
 
 	private Status statusName, statusPassword, ok;
 	private JLabel logInlab, IDLab, passwordLab, skipLab;

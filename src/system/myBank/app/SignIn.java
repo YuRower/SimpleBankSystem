@@ -9,6 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import system.myBank.ATM.ATM;
+import system.myBank.app.info.DeleteAccountInfo;
+import system.myBank.app.info.DepositInfo;
+import system.myBank.app.info.RegisterInfo;
+import system.myBank.app.info.TransferInfo;
+import system.myBank.app.info.WithdrawInfo;
+import system.myBank.app.storage.CustomerDetailStorage;
+import system.myBank.app.storage.HistoryTransactionDetailStorage;
 import system.myBank.chat.ChatClient;
 import system.myBank.chat.server.ChatServer;
 
@@ -28,7 +35,6 @@ public class SignIn extends JFrame implements ActionListener {
 	private final JMenuItem tchat;
 	private JPopupMenu popMenu = new JPopupMenu();
 	private final JMenu menuEdit;
-	// private JPanel statusBar = new JPanel();
 	private JDesktopPane desktop = new JDesktopPane();
 
 	private final JMenuItem withdraw, history, transfer, deposit, create, info, delete, open, infor, depositMoney,
@@ -42,7 +48,6 @@ public class SignIn extends JFrame implements ActionListener {
 	private JMenu menuCreate, menuInfo, menuDelete, menuTest, menuChat;
 
 	private ChatClient myChat;
-	private ChatServer cs;
 	Image img;
 	Image bgimage = null;
 
@@ -78,17 +83,9 @@ public class SignIn extends JFrame implements ActionListener {
 				quitApp();
 			}
 		});
-		try {
-			final Image backgroundImage = javax.imageio.ImageIO.read(new File("background.jpg"));
-			setContentPane(new JPanel(new BorderLayout()) {
-				@Override
-				public void paintComponent(Graphics g) {
-					g.drawImage(backgroundImage, 0, 0, null);
-				}
-			});
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+
+		setContentPane(new JPanel(new BorderLayout()));
+
 		setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth()) / 2,
 				(Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2);
 
@@ -206,17 +203,14 @@ public class SignIn extends JFrame implements ActionListener {
 
 		welcome = new JLabel("Добро пожаловать ,Cегодня  " + d + " ", JLabel.RIGHT);
 		welcome.setForeground(Color.black);
-		welcome.setToolTipText("Welcoming the User & System Current Date");
 		statusBar.setLayout(new BorderLayout());
 		statusBar.add(author, BorderLayout.WEST);
 		statusBar.add(welcome, BorderLayout.SOUTH);
 
 		getContentPane().add(desktop, BorderLayout.CENTER);
 		getContentPane().add(statusBar, BorderLayout.SOUTH);
-		setVisible(true);
 
 		setSize(800, 500);
-		setLocation(300, 100);
 		setResizable(false);
 		setVisible(true);
 	}
@@ -245,31 +239,31 @@ public class SignIn extends JFrame implements ActionListener {
 			});
 
 		} else if (marker == create) {
-			new Register("Registration");
+			new RegisterInfo("Registration");
 		}
 
 		else if (marker == history) {
-			new HistoryTrans();
+			new HistoryTransactionDetailStorage();
 		}
 
 		else if (marker == transfer) {
-			new Transfer("  Transfer");
+			new TransferInfo("  Transfer");
 		}
 
 		else if (marker == deposit) {
-			new Deposit(" Deposit...");
+			new DepositInfo(" Deposit...");
 		}
 
 		else if (marker == withdraw) {
-			new Withdraw(" withdraw...");
+			new WithdrawInfo(" withdraw...");
 		}
 
 		else if (marker == delete) {
-			new DeleteAccount(" Delete Account...");
+			new DeleteAccountInfo(" Delete Account...");
 		}
 
 		else if (marker == info) {
-			new CustomerInfo();
+			new CustomerDetailStorage();
 		} else {
 			throw new RuntimeException("not Found");
 

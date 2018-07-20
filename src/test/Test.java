@@ -1,6 +1,6 @@
 package test;
 
-import system.myBank.app.PasswordStorage;
+import system.myBank.app.security.PasswordStorage;
 
 public class Test
 {

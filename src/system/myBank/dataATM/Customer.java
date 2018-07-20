@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import javax.swing.JTextField;
 
-import system.myBank.app.Register;
+import system.myBank.app.info.RegisterInfo;
 
 public class Customer {
-	Register arrList;
+	RegisterInfo arrList;
     private ArrayList<Account> accounts;
 
     private String firstName;

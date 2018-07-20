@@ -25,6 +25,10 @@ import java.util.ArrayList;
 
 import system.myBank.dataATM.*;
 import system.myBank.app.*;
+import system.myBank.app.entity.Registration;
+import system.myBank.app.entity.Transaction;
+import system.myBank.app.info.RegisterInfo;
+import system.myBank.app.storage.AmountDetailStorage;
 
 public class ATM extends javax.swing.JFrame implements KeyListener {
 
@@ -36,7 +40,7 @@ public class ATM extends javax.swing.JFrame implements KeyListener {
 	private static boolean flag;
 	private String buttonPressed;
 
-	Register tname;
+	RegisterInfo tname;
 	int customerID = 0;
 	int b = 0;
 	private ArrayList<Registration> lst;
@@ -55,7 +59,7 @@ public class ATM extends javax.swing.JFrame implements KeyListener {
 			int cnt = 0, c = 0;
 			for (Transaction tn : folder) {
 
-				data[cnt][1] = tn.getdepositamount();
+				data[cnt][1] = tn.getDepositAmount();
 
 				cnt++;
 				c = 0;
@@ -71,7 +75,7 @@ public class ATM extends javax.swing.JFrame implements KeyListener {
 			for (Registration re : list) {
 				data[r][0] = re.getName();
 
-				data[r][2] = re.getaccountno();
+				data[r][2] = re.getAccountID();
 
 				b = 0;
 				Customer firstCustomer = new Customer(data[r][customerID], "");
@@ -392,7 +396,7 @@ public class ATM extends javax.swing.JFrame implements KeyListener {
 	}
 
 	private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		AmountInfo a;
+		AmountDetailStorage a;
 		try {
 			try {
 				FileInputStream fin = new FileInputStream("Banking.dat");
@@ -406,7 +410,7 @@ public class ATM extends javax.swing.JFrame implements KeyListener {
 			historyArea.append("Взнос : $" + amt + ", новий баланс =  $" + currentAccount.getBalance() + "\n");
 			statusField.setText("Готово");
 
-			lstTrans.get(customerID).setdepositamount(currentAccount.getBalance() + "");
+			lstTrans.get(customerID).setDepositAmount(currentAccount.getBalance() + "");
 			try {
 				FileOutputStream fout = new FileOutputStream("Banking.dat");
 				ObjectOutputStream oout = new ObjectOutputStream(fout);
@@ -440,7 +444,7 @@ public class ATM extends javax.swing.JFrame implements KeyListener {
 				statusField.setText("Готово");
 			}
 
-			lstTrans.get(customerID).setdepositamount(currentAccount.getBalance() + "");
+			lstTrans.get(customerID).setDepositAmount(currentAccount.getBalance() + "");
 			try {
 				FileOutputStream fout = new FileOutputStream("Banking.dat");
 				ObjectOutputStream oout = new ObjectOutputStream(fout);
