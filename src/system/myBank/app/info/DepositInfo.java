@@ -13,7 +13,7 @@ import javax.swing.*;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.AmountDetailStorage;
-import system.myBank.app.storage.BankTransactionDetailStorage;
+import system.myBank.app.storage.AddTransactionDetailStorage;
 import system.myBank.app.storage.DepositDetailStorage;
 import system.myBank.app.storage.SearchTransactionDetailStorage;
 
@@ -99,7 +99,6 @@ public class DepositInfo extends JFrame implements ActionListener {
 		setSize(450, 325);
 		setLocation(200, 200);
 		setResizable(false);
-		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 
@@ -141,7 +140,7 @@ public class DepositInfo extends JFrame implements ActionListener {
 
 			Transaction ts = new Transaction(amount, accountno);
 			SearchTransactionDetailStorage scr = new SearchTransactionDetailStorage();
-			norFound = scr.searchaccountno(ts);
+			norFound = scr.searchAccountID(ts);
 
 			if (norFound == -1) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
@@ -151,7 +150,7 @@ public class DepositInfo extends JFrame implements ActionListener {
 				new DepositDetailStorage(ts, norFound);
 				new AmountDetailStorage();
 
-				BankTransactionDetailStorage dt = new BankTransactionDetailStorage(tr);
+				AddTransactionDetailStorage dt = new AddTransactionDetailStorage(tr);
 
 			}
 

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 import system.myBank.app.entity.Transaction;
 
-public class TransactionAddDetailStorage {
+public class AddTransactionStorage {
 	ArrayList<Transaction> folder4;
 
-	public TransactionAddDetailStorage(Transaction rg1) {
+	public AddTransactionStorage(Transaction rg1) {
 		try {
 			FileInputStream fin = new FileInputStream("Banking.dat");
 			ObjectInputStream oin = new ObjectInputStream(fin);
@@ -32,6 +32,6 @@ public class TransactionAddDetailStorage {
 
 	}
 
-	public TransactionAddDetailStorage() {
+	public AddTransactionStorage() {
 	}
 }

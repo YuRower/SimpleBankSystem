@@ -12,7 +12,7 @@ import javax.swing.*;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.AmountDetailStorage;
-import system.myBank.app.storage.BankTransactionDetailStorage;
+import system.myBank.app.storage.AddTransactionDetailStorage;
 import system.myBank.app.storage.DepositDetailStorage;
 import system.myBank.app.storage.SearchTransactionDetailStorage;
 import system.myBank.app.storage.WithdrawDetailStorage;
@@ -168,7 +168,7 @@ public class TransferInfo extends JFrame implements ActionListener {
 
 			Transaction ts1 = new Transaction(amount, accountno1);
 			SearchTransactionDetailStorage scr1 = new SearchTransactionDetailStorage();
-			a = scr1.searchaccountno(ts1);
+			a = scr1.searchAccountID(ts1);
 
 			if (a == -1) {
 				JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT NO.FOUND");
@@ -176,18 +176,18 @@ public class TransferInfo extends JFrame implements ActionListener {
 
 				Transaction ts2 = new Transaction(amount, accountno2);
 				SearchTransactionDetailStorage scr2 = new SearchTransactionDetailStorage();
-				b = scr2.searchaccountno(ts2);
+				b = scr2.searchAccountID(ts2);
 
 				if (b == -1) {
 					JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT NO.FOUND");
 				} else {
 					new WithdrawDetailStorage(ts1, a);
 					TransactionInfo tn = new TransactionInfo(accountno1, amount, credit);
-					BankTransactionDetailStorage dh = new BankTransactionDetailStorage(tn);
+					AddTransactionDetailStorage dh = new AddTransactionDetailStorage(tn);
 
 					new DepositDetailStorage(ts2, b);
 					TransactionInfo tg = new TransactionInfo(accountno2, debit, amount);
-					BankTransactionDetailStorage da = new BankTransactionDetailStorage(tg);
+					AddTransactionDetailStorage da = new AddTransactionDetailStorage(tg);
 					// DataInfo();
 					new AmountDetailStorage();
 				}

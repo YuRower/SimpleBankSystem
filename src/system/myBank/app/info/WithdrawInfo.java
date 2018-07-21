@@ -12,7 +12,7 @@ import javax.swing.*;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.AmountDetailStorage;
-import system.myBank.app.storage.BankTransactionDetailStorage;
+import system.myBank.app.storage.AddTransactionDetailStorage;
 import system.myBank.app.storage.SearchTransactionDetailStorage;
 import system.myBank.app.storage.WithdrawDetailStorage;
 
@@ -141,7 +141,7 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 
 			Transaction ts = new Transaction(amount, accountno);
 			SearchTransactionDetailStorage scr = new SearchTransactionDetailStorage();
-			notFound = scr.searchaccountno(ts);
+			notFound = scr.searchAccountID(ts);
 
 			if (notFound == -1) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
@@ -150,7 +150,7 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 				new AmountDetailStorage();
 
 				TransactionInfo tr = new TransactionInfo(accountno, amount, "");
-				BankTransactionDetailStorage dt = new BankTransactionDetailStorage(tr);
+				AddTransactionDetailStorage dt = new AddTransactionDetailStorage(tr);
 			}
 
 		}

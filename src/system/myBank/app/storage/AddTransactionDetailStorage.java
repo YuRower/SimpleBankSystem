@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import system.myBank.app.entity.TransactionInfo;
 
-public class BankTransactionDetailStorage {
+public class AddTransactionDetailStorage {
 	ArrayList<TransactionInfo> match;
 
-	public BankTransactionDetailStorage(TransactionInfo rg1) {
+	public AddTransactionDetailStorage(TransactionInfo rg1) {
 		try {
 			FileInputStream fin2 = new FileInputStream("BankTrans.dat");
 			ObjectInputStream oin2 = new ObjectInputStream(fin2);

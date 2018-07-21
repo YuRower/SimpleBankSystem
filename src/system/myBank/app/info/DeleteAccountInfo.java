@@ -3,6 +3,8 @@ package system.myBank.app.info;
 import java.awt.Color;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.Container;
 import java.awt.GridLayout;
 
@@ -15,110 +17,113 @@ import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.storage.AmountDetailStorage;
 import system.myBank.app.storage.CustomerDetailStorage;
-import system.myBank.app.storage.DeleteRegistrationDetailStorage;
-import system.myBank.app.storage.DeleteTransactionDetailStorage;
+import system.myBank.app.storage.RemoveRegistrationDetailStorage;
+import system.myBank.app.storage.RemoveTransactionDetailStorage;
 import system.myBank.app.storage.SearchRegistrDetailStorage;
 import system.myBank.app.storage.SearchTransactionDetailStorage;
 
+enum StatusEnter {
+	INVALID_ENTER, VALID_ENTER;
+}
+
 public class DeleteAccountInfo extends JFrame implements ActionListener {
 
-	ArrayList<Registration> list;
-	ArrayList<Transaction> folder;
-
-	private JLabel lAccountNo;
-	private JButton bok;
-	private JTextField tAcntno;
-	private int notFound, a1, enterValid = 0;
+	ArrayList<Registration> listRegistr;
+	ArrayList<Transaction> listTransaction;
+	public StatusEnter statusEnter;
+	private JLabel lAccountNum;
+	private JButton buttonOK;
+	private JTextField fieldID;
+	private int notFoundRegister, notFoundTransaction;
+	private static final String NUMBER_PATTERN = "^[0-9]";
+	private Pattern pattern;
+	private Matcher matcher;
 
 	public DeleteAccountInfo(String title) {
 		super(title);
-
-		list = new ArrayList<Registration>();
-		folder = new ArrayList<Transaction>();
-
+		listRegistr = new ArrayList<Registration>();
+		listTransaction = new ArrayList<Transaction>();
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(5, 2));
-
-		lAccountNo = new JLabel("  Enter Account No.:");
-
-		lAccountNo.setForeground(Color.BLACK);
-		tAcntno = new JTextField(20);
-
-		bok = new JButton("OK");
-		bok.addActionListener(this);
-
+		lAccountNum = new JLabel("  Enter Account No.:");
+		lAccountNum.setForeground(Color.BLACK);
+		fieldID = new JTextField(20);
+		buttonOK = new JButton("OK");
+		buttonOK.addActionListener(this);
 		c.add(new JLabel(""));
 		c.add(new JLabel(""));
-		c.add(lAccountNo);
-		c.add(tAcntno);
+		c.add(lAccountNum);
+		c.add(fieldID);
 		c.add(new JLabel(""));
 		c.add(new JLabel(""));
 		c.add(new JLabel(""));
-		c.add(bok);
+		c.add(buttonOK);
 		c.add(new JLabel(""));
 		c.add(new JLabel(""));
-
 		setSize(400, 180);
 		setLocation(200, 200);
 		setResizable(false);
-
 		setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		String accountno = tAcntno.getText();
+		String accountNum = fieldID.getText();
 		String amount = "";
-
 		String name = "";
-		String phoneno = "";
+		String phoneNum = "";
 		String address = "";
-		String emailid = "";
-		String depositamount = "";
+		String emailID = "";
+		String depositAmount = "";
 		String gender = "";
-		String accounttype = "";
-		String dob = "";
+		String accountType = "";
+		String DOB = "";
 
-		if (ae.getSource() == bok) {
+		if (ae.getSource() == buttonOK) {
 
-			String s1 = tAcntno.getText();
-			String reg = "^[0-9]";
-			Scanner sc = new Scanner(s1);
-			String result = sc.findInLine(reg);
+			String accountID = String.valueOf(fieldID.getText());
+			pattern = Pattern.compile(NUMBER_PATTERN);
+			boolean result = validate(accountID);
 
-			if (result == null) {
-				tAcntno.setText("");
+			if (!result) {
+				fieldID.setText("");
 				JOptionPane.showMessageDialog(this, "Enter Valid Account No..");
-				enterValid = 1;
+				statusEnter = StatusEnter.INVALID_ENTER;
 			}
-			if (enterValid == 0) {
+			if (statusEnter == StatusEnter.VALID_ENTER) {
 				JOptionPane.showMessageDialog(this, "Your account will be deleted..");
 			}
 
-			Registration r = new Registration(name, phoneno, address, emailid, depositamount, accountno, gender,
-					accounttype, dob);
+			Registration r = new Registration(name, phoneNum, address, emailID, depositAmount, accountNum, gender,
+					accountType, DOB);
 
 			SearchRegistrDetailStorage scr = new SearchRegistrDetailStorage();
-			notFound = scr.searchaccountno(r);
+			notFoundRegister = scr.searchAcountID(r);
 
-			Transaction tst = new Transaction(amount, accountno);
+			Transaction tst = new Transaction(amount, accountNum);
 			SearchTransactionDetailStorage sa = new SearchTransactionDetailStorage();
-			a1 = sa.searchaccountno(tst);
+			notFoundTransaction = sa.searchAccountID(tst);
 
-			if (a1 == -1) {
-				JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT FOUND");
+			if (notFoundTransaction == -1) {
+				JOptionPane.showMessageDialog(this, "NO SUCH Transaction FOUND");
 			} else {
-				new DeleteTransactionDetailStorage(a1);
+				new RemoveTransactionDetailStorage(notFoundTransaction);
 				new AmountDetailStorage();
 			}
 
-			if (notFound == -1) {
+			if (notFoundRegister == -1) {
 				JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT FOUND");
 			} else {
-				new DeleteRegistrationDetailStorage(notFound);
+				new RemoveRegistrationDetailStorage(notFoundRegister);
 				new CustomerDetailStorage();
 			}
 
 		}
+
+	}
+
+	public boolean validate(final String accountID) {
+		matcher = pattern.matcher(accountID);
+		return matcher.matches();
 
 	}
 

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 import system.myBank.app.entity.Registration;
 
-public class DeleteRegistrationDetailStorage
+public class RemoveRegistrationDetailStorage
 {
     ArrayList<Registration> listReg;
    
 
-    public DeleteRegistrationDetailStorage(int index)
+    public RemoveRegistrationDetailStorage(int index)
     {
         try{
 		

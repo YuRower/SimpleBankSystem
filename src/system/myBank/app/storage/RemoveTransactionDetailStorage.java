@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 import system.myBank.app.entity.Transaction;
 
-public class DeleteTransactionDetailStorage {
+public class RemoveTransactionDetailStorage {
 
 	ArrayList<Transaction> lst;
 
-	public DeleteTransactionDetailStorage(int index) {
+	public RemoveTransactionDetailStorage(int index) {
 		{
 			try {
 				FileInputStream fin = new FileInputStream("Banking.dat");

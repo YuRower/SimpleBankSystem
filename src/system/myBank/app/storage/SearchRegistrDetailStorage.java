@@ -17,7 +17,8 @@ public class SearchRegistrDetailStorage {
 	private ArrayList<Registration> folder2;
 	private int f = -1;
 
-	public int searchaccountno(Registration rn) {
+
+	public int searchAcountID(Registration rn) {
 		try {
 			FileInputStream fin = new FileInputStream("Register.dat");
 			ObjectInputStream oin = new ObjectInputStream(fin);

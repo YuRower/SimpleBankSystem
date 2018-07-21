@@ -14,10 +14,10 @@ import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.CustomerDetailStorage;
-import system.myBank.app.storage.RegistrDetailStorage;
+import system.myBank.app.storage.AddRegistrDetailStorage;
 import system.myBank.app.storage.SearchDetailStorage;
 import system.myBank.app.storage.SearchRegistrDetailStorage;
-import system.myBank.app.storage.TransactionAddDetailStorage;
+import system.myBank.app.storage.AddTransactionStorage;
 
 public class RegisterInfo extends JFrame implements ActionListener {
 	public static String name;
@@ -234,7 +234,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		Transaction ts = new Transaction(depositamount, accountno);
 
 		SearchRegistrDetailStorage scr = new SearchRegistrDetailStorage();
-		a = scr.searchaccountno(r);
+		a = scr.searchAcountID(r);
 
 		if (ae.getSource() == rmale) {
 			JOptionPane.showMessageDialog(this, "Your Gender : Male");
@@ -341,8 +341,8 @@ public class RegisterInfo extends JFrame implements ActionListener {
 								"This account already exists. Please enter another no.acc...");
 					} else {
 						JOptionPane.showMessageDialog(this, "Your data saved successfully...");
-						new RegistrDetailStorage(r);
-						new TransactionAddDetailStorage(ts);
+						new AddRegistrDetailStorage(r);
+						new AddTransactionStorage(ts);
 					}
 				}
 

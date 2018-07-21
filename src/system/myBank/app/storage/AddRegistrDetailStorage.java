@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import system.myBank.app.entity.Registration;
 
-public class RegistrDetailStorage {
+public class AddRegistrDetailStorage {
 	ArrayList<Registration> list4;
 
-	public RegistrDetailStorage(Registration rg1) {
+	public AddRegistrDetailStorage(Registration rg1) {
 		try {
 			FileInputStream fin = new FileInputStream("Register.dat");
 			ObjectInputStream oin = new ObjectInputStream(fin);
