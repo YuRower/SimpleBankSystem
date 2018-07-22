@@ -10,10 +10,10 @@ import system.myBank.app.entity.Registration;
 
 public class AddRegistrDetailStorage {
 	ArrayList<Registration> list4;
-
+	private final String REGISTR_FILE="Register.dat";
 	public AddRegistrDetailStorage(Registration rg1) {
 		try {
-			FileInputStream fin = new FileInputStream("Register.dat");
+			FileInputStream fin = new FileInputStream(REGISTR_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);
 			list4 = (ArrayList<Registration>) oin.readObject();
 		} catch (Exception e) {

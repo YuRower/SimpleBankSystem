@@ -14,6 +14,8 @@ public class AddTransactionStorage {
 
 	public AddTransactionStorage(Transaction rg1) {
 		try {
+			System.out.println(rg1.getClass().getSimpleName());
+
 			FileInputStream fin = new FileInputStream("Banking.dat");
 			ObjectInputStream oin = new ObjectInputStream(fin);
 			folder4 = (ArrayList<Transaction>) oin.readObject();

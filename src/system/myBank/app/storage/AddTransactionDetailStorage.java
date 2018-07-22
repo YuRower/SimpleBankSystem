@@ -13,6 +13,8 @@ public class AddTransactionDetailStorage {
 
 	public AddTransactionDetailStorage(TransactionInfo rg1) {
 		try {
+			System.out.println(rg1.getClass().getSimpleName());
+
 			FileInputStream fin2 = new FileInputStream("BankTrans.dat");
 			ObjectInputStream oin2 = new ObjectInputStream(fin2);
 			match = (ArrayList<TransactionInfo>) oin2.readObject();
