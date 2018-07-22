@@ -6,14 +6,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 
-public class AddTransactionDetailStorage {
+public class TransactionInfoOperation extends AbstractBankOperation<TransactionInfo> {
 	ArrayList<TransactionInfo> match;
 
-	public AddTransactionDetailStorage(TransactionInfo rg1) {
+	@Override
+	public void addInfo(TransactionInfo obj) {
 		try {
-			System.out.println(rg1.getClass().getSimpleName());
+			System.out.println(obj.getClass().getSimpleName());
 
 			FileInputStream fin2 = new FileInputStream("BankTrans.dat");
 			ObjectInputStream oin2 = new ObjectInputStream(fin2);
@@ -22,14 +24,24 @@ public class AddTransactionDetailStorage {
 			match = new ArrayList<TransactionInfo>();
 		}
 
-		match.add(rg1);
+		match.add(obj);
 
 		try {
 			FileOutputStream fout2 = new FileOutputStream("BankTrans.dat");
 			ObjectOutputStream oout2 = new ObjectOutputStream(fout2);
 			oout2.writeObject(match);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 
+	@Override
+	public void removeInfo(int index) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int searchInfoID(TransactionInfo obj) {
+		throw new UnsupportedOperationException();
 	}
 }

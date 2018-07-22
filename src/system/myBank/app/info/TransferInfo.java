@@ -12,10 +12,8 @@ import javax.swing.*;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.AmountDetailStorage;
-import system.myBank.app.storage.AddTransactionDetailStorage;
-import system.myBank.app.storage.DepositDetailStorage;
-import system.myBank.app.storage.SearchTransactionDetailStorage;
-import system.myBank.app.storage.WithdrawDetailStorage;
+import system.myBank.app.storage.TransactionInfoOperation;
+import system.myBank.app.storage.TransactionOperation;
 
 public class TransferInfo extends JFrame implements ActionListener {
 	ArrayList<Transaction> folder;
@@ -167,28 +165,29 @@ public class TransferInfo extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "your amount will be updated..");
 
 			Transaction ts1 = new Transaction(amount, accountno1);
-			SearchTransactionDetailStorage scr1 = new SearchTransactionDetailStorage();
-			a = scr1.searchAccountID(ts1);
+			TransactionOperation transOp1 = new TransactionOperation();
+			a = transOp1.searchInfoID(ts1);
 
 			if (a == -1) {
 				JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT NO.FOUND");
 			} else {
 
 				Transaction ts2 = new Transaction(amount, accountno2);
-				SearchTransactionDetailStorage scr2 = new SearchTransactionDetailStorage();
-				b = scr2.searchAccountID(ts2);
+				TransactionOperation transOp2 = new TransactionOperation();
+				b = transOp2.searchInfoID(ts2);
 
 				if (b == -1) {
 					JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT NO.FOUND");
 				} else {
-					new WithdrawDetailStorage(ts1, a);
+					transOp2.withdrawDetailStorage(ts1, a);
 					TransactionInfo tn = new TransactionInfo(accountno1, amount, credit);
-					AddTransactionDetailStorage dh = new AddTransactionDetailStorage(tn);
+					TransactionInfoOperation dh = new TransactionInfoOperation();
+					dh.addInfo(tn);
 
-					new DepositDetailStorage(ts2, b);
+					transOp2.depositDetailStorage(ts2, b);
 					TransactionInfo tg = new TransactionInfo(accountno2, debit, amount);
-					AddTransactionDetailStorage da = new AddTransactionDetailStorage(tg);
-					// DataInfo();
+					TransactionInfoOperation da = new TransactionInfoOperation();
+					dh.addInfo(tg);
 					new AmountDetailStorage();
 				}
 			}

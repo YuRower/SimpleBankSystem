@@ -105,12 +105,12 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 
 			Transaction tst = new Transaction(amount, accountNum);
 			TransactionOperation transaction = new TransactionOperation();
-			notFoundTransaction = transaction.searchAccountID(tst);
+			notFoundTransaction = transaction.searchInfoID(tst);
 
 			if (notFoundTransaction == -1) {
 				JOptionPane.showMessageDialog(this, "NO SUCH Transaction FOUND");
 			} else {
-				transaction.RemoveTransactionDetailStorage(notFoundTransaction);
+				transaction.removeInfo(notFoundTransaction);
 				new AmountDetailStorage();
 			}
 

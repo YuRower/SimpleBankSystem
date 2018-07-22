@@ -14,7 +14,6 @@ import java.util.*;
 
 public class AmountDetailStorage extends JFrame {
 	ArrayList<Transaction> folder;
-	// public AmountInfo getFolder;
 
 	public AmountDetailStorage() {
 		super("Amount Details");
@@ -28,10 +27,8 @@ public class AmountDetailStorage extends JFrame {
 
 			int cnt = 0, c = 0;
 			for (Transaction tn : folder) {
-
 				data[cnt][0] = tn.getDepositAmount();
 				data[cnt][1] = tn.getAccountID();
-
 				cnt++;
 				c = 0;
 			}
@@ -40,6 +37,7 @@ public class AmountDetailStorage extends JFrame {
 				ObjectOutputStream oout = new ObjectOutputStream(fout);
 				oout.writeObject(folder);
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
 			Container con = getContentPane();

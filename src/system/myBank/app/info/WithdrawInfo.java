@@ -12,9 +12,8 @@ import javax.swing.*;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.AmountDetailStorage;
-import system.myBank.app.storage.AddTransactionDetailStorage;
-import system.myBank.app.storage.SearchTransactionDetailStorage;
-import system.myBank.app.storage.WithdrawDetailStorage;
+import system.myBank.app.storage.TransactionInfoOperation;
+import system.myBank.app.storage.TransactionOperation;
 
 public class WithdrawInfo extends JFrame implements ActionListener {
 
@@ -140,17 +139,19 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "your amount will be debited..");
 
 			Transaction ts = new Transaction(amount, accountno);
-			SearchTransactionDetailStorage scr = new SearchTransactionDetailStorage();
-			notFound = scr.searchAccountID(ts);
+			TransactionOperation transOp = new TransactionOperation();
+			notFound = transOp.searchInfoID(ts);
 
 			if (notFound == -1) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
 			} else if ((result != null) && (result1 != null) && !(notFound == -1)) {
-				new WithdrawDetailStorage(ts, notFound);
+				transOp.withdrawDetailStorage(ts, notFound);
 				new AmountDetailStorage();
 
 				TransactionInfo tr = new TransactionInfo(accountno, amount, "");
-				AddTransactionDetailStorage dt = new AddTransactionDetailStorage(tr);
+				
+				TransactionInfoOperation dt = new TransactionInfoOperation();
+				dt.addInfo(tr);
 			}
 
 		}

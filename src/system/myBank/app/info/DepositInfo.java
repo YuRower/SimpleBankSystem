@@ -13,9 +13,8 @@ import javax.swing.*;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.AmountDetailStorage;
-import system.myBank.app.storage.AddTransactionDetailStorage;
-import system.myBank.app.storage.DepositDetailStorage;
-import system.myBank.app.storage.SearchTransactionDetailStorage;
+import system.myBank.app.storage.TransactionInfoOperation;
+import system.myBank.app.storage.TransactionOperation;
 
 public class DepositInfo extends JFrame implements ActionListener {
 
@@ -139,18 +138,19 @@ public class DepositInfo extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "your amount will be credited..");
 
 			Transaction ts = new Transaction(amount, accountno);
-			SearchTransactionDetailStorage scr = new SearchTransactionDetailStorage();
-			norFound = scr.searchAccountID(ts);
+			TransactionOperation transaction = new TransactionOperation();
+			norFound = transaction.searchInfoID(ts);
 
 			if (norFound == -1) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
 			}
 			if ((result != null) && (result1 != null) && !(norFound == -1)) {
 				TransactionInfo tr = new TransactionInfo(accountno, "", amount);
-				new DepositDetailStorage(ts, norFound);
+				transaction.depositDetailStorage(ts, norFound);
 				new AmountDetailStorage();
 
-				AddTransactionDetailStorage dt = new AddTransactionDetailStorage(tr);
+				TransactionInfoOperation dt = new TransactionInfoOperation();
+				dt.addInfo(tr);
 
 			}
 

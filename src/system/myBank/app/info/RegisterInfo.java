@@ -17,13 +17,13 @@ import system.myBank.app.storage.CustomerDetailStorage;
 import system.myBank.app.storage.RegisterOperation;
 //import system.myBank.app.storage.AddRegistrDetailStorage;
 import system.myBank.app.storage.SearchDetailStorage;
-import system.myBank.app.storage.AddTransactionStorage;
+import system.myBank.app.storage.TransactionOperation;
 
 public class RegisterInfo extends JFrame implements ActionListener {
 	public static String name;
 	ArrayList arrlist;
 	public RegisterOperation register = new RegisterOperation() ;
-
+    public TransactionOperation transaction = new TransactionOperation();
 	private JLabel lName, lDob, lGender, lPhoneN, lAdress, lEmail, lAccType, lDepAmo, l12, laccNo, regstr;
 	public JTextField tname;
 	private JTextField tPhoneNo;
@@ -343,7 +343,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 					} else {
 						JOptionPane.showMessageDialog(this, "Your data saved successfully...");
 						register.addInfo(r);
-						new AddTransactionStorage(ts);
+						transaction.addInfo(ts);
 					}
 				}
 
