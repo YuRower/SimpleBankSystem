@@ -17,17 +17,15 @@ import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.storage.AmountDetailStorage;
 import system.myBank.app.storage.CustomerDetailStorage;
-import system.myBank.app.storage.RemoveRegistrationDetailStorage;
-import system.myBank.app.storage.RemoveTransactionDetailStorage;
-import system.myBank.app.storage.SearchRegistrDetailStorage;
-import system.myBank.app.storage.SearchTransactionDetailStorage;
+import system.myBank.app.storage.RegisterOperation;
+import system.myBank.app.storage.TransactionOperation;
 
 enum StatusEnter {
 	INVALID_ENTER, VALID_ENTER;
 }
 
 public class DeleteAccountInfo extends JFrame implements ActionListener {
-
+	TransactionOperation transaction = TransactionOperation();
 	ArrayList<Registration> listRegistr;
 	ArrayList<Transaction> listTransaction;
 	public StatusEnter statusEnter;
@@ -38,6 +36,7 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 	private static final String NUMBER_PATTERN = "^[0-9]";
 	private Pattern pattern;
 	private Matcher matcher;
+	public RegisterOperation register = new RegisterOperation() ;
 
 	public DeleteAccountInfo(String title) {
 		super(title);
@@ -64,6 +63,11 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 		setLocation(200, 200);
 		setResizable(false);
 		setVisible(true);
+	}
+
+	private TransactionOperation TransactionOperation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -96,24 +100,24 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 			Registration r = new Registration(name, phoneNum, address, emailID, depositAmount, accountNum, gender,
 					accountType, DOB);
 
-			SearchRegistrDetailStorage scr = new SearchRegistrDetailStorage();
-			notFoundRegister = scr.searchAcountID(r);
+			RegisterOperation scr = new RegisterOperation();
+			notFoundRegister = scr.searchInfoID(r);
 
 			Transaction tst = new Transaction(amount, accountNum);
-			SearchTransactionDetailStorage sa = new SearchTransactionDetailStorage();
-			notFoundTransaction = sa.searchAccountID(tst);
+			TransactionOperation transaction = new TransactionOperation();
+			notFoundTransaction = transaction.searchAccountID(tst);
 
 			if (notFoundTransaction == -1) {
 				JOptionPane.showMessageDialog(this, "NO SUCH Transaction FOUND");
 			} else {
-				new RemoveTransactionDetailStorage(notFoundTransaction);
+				transaction.RemoveTransactionDetailStorage(notFoundTransaction);
 				new AmountDetailStorage();
 			}
 
 			if (notFoundRegister == -1) {
 				JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT FOUND");
 			} else {
-				new RemoveRegistrationDetailStorage(notFoundRegister);
+				register.removeInfo(notFoundRegister);
 				new CustomerDetailStorage();
 			}
 

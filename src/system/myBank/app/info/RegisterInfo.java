@@ -14,14 +14,15 @@ import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 import system.myBank.app.storage.CustomerDetailStorage;
-import system.myBank.app.storage.AddRegistrDetailStorage;
+import system.myBank.app.storage.RegisterOperation;
+//import system.myBank.app.storage.AddRegistrDetailStorage;
 import system.myBank.app.storage.SearchDetailStorage;
-import system.myBank.app.storage.SearchRegistrDetailStorage;
 import system.myBank.app.storage.AddTransactionStorage;
 
 public class RegisterInfo extends JFrame implements ActionListener {
 	public static String name;
 	ArrayList arrlist;
+	public RegisterOperation register = new RegisterOperation() ;
 
 	private JLabel lName, lDob, lGender, lPhoneN, lAdress, lEmail, lAccType, lDepAmo, l12, laccNo, regstr;
 	public JTextField tname;
@@ -233,8 +234,8 @@ public class RegisterInfo extends JFrame implements ActionListener {
 				accounttype, dob);
 		Transaction ts = new Transaction(depositamount, accountno);
 
-		SearchRegistrDetailStorage scr = new SearchRegistrDetailStorage();
-		a = scr.searchAcountID(r);
+		RegisterOperation scr = new RegisterOperation();
+		a = scr.searchInfoID(r);
 
 		if (ae.getSource() == rmale) {
 			JOptionPane.showMessageDialog(this, "Your Gender : Male");
@@ -341,7 +342,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 								"This account already exists. Please enter another no.acc...");
 					} else {
 						JOptionPane.showMessageDialog(this, "Your data saved successfully...");
-						new AddRegistrDetailStorage(r);
+						register.addInfo(r);
 						new AddTransactionStorage(ts);
 					}
 				}

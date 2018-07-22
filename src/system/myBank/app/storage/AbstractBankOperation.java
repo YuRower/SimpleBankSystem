@@ -1,9 +1,9 @@
 package system.myBank.app.storage;
 
-public abstract class AbstractBankOperation {
-	public abstract void addInfo();
-	public abstract void removeInfo();
-	public abstract void searchInfo();
+public abstract class AbstractBankOperation <T>{
+	public abstract void addInfo(T obj);
+	public abstract void removeInfo(int index);
+	public abstract int searchInfoID(T obj);
 
 
 }

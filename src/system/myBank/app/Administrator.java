@@ -11,6 +11,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
+
 import system.myBank.app.security.PasswordStorage;
 import system.myBank.app.security.PasswordStorage.CannotPerformOperationException;
 import system.myBank.app.security.PasswordStorage.InvalidHashException;
@@ -30,11 +34,17 @@ public class Administrator extends JFrame implements ActionListener {
 	private Pattern pattern;
 	private Matcher matcher;
 	Administrator admin, admin1;
-	private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";// 123admin
-	private static final String PASSWORD_PATTERN = "((?=.*[a-z])(?=.*d)(?=.*[@#$%])(?=.*[A-Z]).{6,16})";// Howtodoinjava#
+	static Logger logger = Logger.getLogger(Administrator.class);
 
+	private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
+	private static final String PASSWORD_PATTERN = "((?=.*[a-z])(?=.*d)(?=.*[@#$%])(?=.*[A-Z]).{6,16})";
+	/*static {
+		new DOMConfigurator().doConfigure("log4j2.xml",
+				LogManager.getLoggerRepository());
+	}*/
 	public Administrator(String title) {
 		super(title);
+
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(4, 2));
 
