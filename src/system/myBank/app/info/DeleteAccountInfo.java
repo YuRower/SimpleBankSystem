@@ -25,7 +25,7 @@ enum StatusEnter {
 }
 
 public class DeleteAccountInfo extends JFrame implements ActionListener {
-	TransactionOperation transaction = TransactionOperation();
+	TransactionOperation transaction = new TransactionOperation();
 	ArrayList<Registration> listRegistr;
 	ArrayList<Transaction> listTransaction;
 	public StatusEnter statusEnter;
@@ -36,7 +36,7 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 	private static final String NUMBER_PATTERN = "^[0-9]";
 	private Pattern pattern;
 	private Matcher matcher;
-	public RegisterOperation register = new RegisterOperation() ;
+	public RegisterOperation register = new RegisterOperation();
 
 	public DeleteAccountInfo(String title) {
 		super(title);
@@ -65,10 +65,6 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
-	private TransactionOperation TransactionOperation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public void actionPerformed(ActionEvent ae) {
 		String accountNum = fieldID.getText();

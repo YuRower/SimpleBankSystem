@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Year;
 
 import javax.swing.*;
 
@@ -22,42 +23,44 @@ import system.myBank.app.storage.TransactionOperation;
 public class RegisterInfo extends JFrame implements ActionListener {
 	public static String name;
 	ArrayList arrlist;
-	public RegisterOperation register = new RegisterOperation() ;
-    public TransactionOperation transaction = new TransactionOperation();
+	public RegisterOperation register = new RegisterOperation();
+	public TransactionOperation transaction = new TransactionOperation();
 	private JLabel lName, lDob, lGender, lPhoneN, lAdress, lEmail, lAccType, lDepAmo, l12, laccNo, regstr;
 	public JTextField tname;
-	private JTextField tPhoneNo;
+	private JTextField tPhoneNum;
 	private JTextField tAddress;
 	private JTextField tEmailId;
 	private JTextField tDepositAmount;
-	private JTextField tAccountNo;
+	private JTextField tAccountNum;
 	private JButton bSubmit, bReset, bSearch;
 	private JComboBox day, month, year;
+	private final int MAX_DAY = 31;
+	private final int MAX_MONTH = 12;
+	private final int START_YEAR = 1898;
 
 	private JRadioButton rmale, rfemale, rsaving, rcurrent;
 	private int a, a1, validName = 0, validAddress = 0, validPhone = 0, validEmail = 0, x = 0, validDepositAm = 0,
 			validAccN = 0, withdrawalamount = 0;
 
-	ArrayList<Registration> list;
-	ArrayList<Transaction> folder;
-	ArrayList<TransactionInfo> match;
+	ArrayList<Registration> listRegister;
+	ArrayList<Transaction> listTransaction;
+	ArrayList<TransactionInfo> listTransactionInfo;
 
 	public RegisterInfo(String title) {
 		super(title);
-		list = new ArrayList<Registration>();
-		match = new ArrayList<TransactionInfo>();
-		folder = new ArrayList<Transaction>();
+		listRegister = new ArrayList<Registration>();
+		listTransactionInfo = new ArrayList<TransactionInfo>();
+		listTransaction = new ArrayList<Transaction>();
 
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(16, 2));
 
 		tname = new JTextField(20);
-		tPhoneNo = new JTextField(20);
+		tPhoneNum = new JTextField(20);
 		tAddress = new JTextField(20);
 		tEmailId = new JTextField(20);
-
 		tDepositAmount = new JTextField(20);
-		tAccountNo = new JTextField(20);
+		tAccountNum = new JTextField(20);
 
 		rmale = new JRadioButton("Male");
 		rmale.addActionListener(this);
@@ -94,25 +97,28 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		gpanel2.add(rsaving);
 		gpanel2.add(rcurrent);
 
-		String dvalue[] = new String[31];
-		for (int i = 0; i <= 30; i++) {
+		String dvalue[] = new String[MAX_DAY];
+		for (int i = 0; i <= MAX_DAY - 1; i++) {
 			dvalue[i] = String.valueOf(i + 1);
 		}
 		day = new JComboBox(dvalue);
 
-		String mvalue[] = new String[12];
-		for (int i = 0; i <= 11; i++) {
+		String mvalue[] = new String[MAX_MONTH];
+		for (int i = 0; i <= MAX_MONTH - 1; i++) {
 			mvalue[i] = String.valueOf(i + 1);
 		}
 		month = new JComboBox(mvalue);
 
-		String yvalue[] = new String[112];
+		int currentYear = Year.now().getValue();
+
+		String yvalue[] = new String[currentYear - START_YEAR + 1];
 		int cnt = 0;
-		for (int i = 1900; i <= 2011; i++) {
+		for (int i = START_YEAR; i <= currentYear; i++) {
 			yvalue[cnt] = String.valueOf(i);
 			cnt++;
 		}
 		year = new JComboBox(yvalue);
+
 		JPanel cpanel = new JPanel();
 		cpanel.add(day);
 		cpanel.add(month);
@@ -173,7 +179,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		c.add(lGender);
 		c.add(gpanel);
 		c.add(lPhoneN);
-		c.add(tPhoneNo);
+		c.add(tPhoneNum);
 		c.add(lAdress);
 		c.add(tAddress);
 		c.add(lEmail);
@@ -185,7 +191,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		c.add(tDepositAmount);
 
 		c.add(laccNo);
-		c.add(tAccountNo);
+		c.add(tAccountNum);
 		c.add(bSubmit);
 		c.add(new JLabel(""));
 		c.add(bReset);
@@ -195,7 +201,6 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		setSize(800, 650);
 		setLocation(200, 40);
 		setResizable(false);
-
 		setVisible(true);
 
 	}
@@ -205,11 +210,11 @@ public class RegisterInfo extends JFrame implements ActionListener {
 
 		String name = tname.getText();
 
-		String phoneno = tPhoneNo.getText();
+		String phoneno = tPhoneNum.getText();
 		String address = tAddress.getText();
 		String emailid = tEmailId.getText();
 		String depositamount = tDepositAmount.getText();
-		String accountno = tAccountNo.getText();
+		String accountno = tAccountNum.getText();
 
 		String gender = "";
 		if (rmale.isSelected()) {
@@ -272,13 +277,13 @@ public class RegisterInfo extends JFrame implements ActionListener {
 						JOptionPane.showMessageDialog(this, "Your data saved..");
 				}
 
-				String s2 = tPhoneNo.getText();
+				String s2 = tPhoneNum.getText();
 				String reg2 = "\\d{10}";
 				Scanner sc2 = new Scanner(s2);
 				String result2 = sc2.findInLine(reg2);
 
 				if (result2 == null) {
-					tPhoneNo.setText("");
+					tPhoneNum.setText("");
 					JOptionPane.showMessageDialog(this, "Enter Valid phone no...");
 					validPhone = 1;
 					if ((validName == 0) && (validAddress == 0) && (validPhone == 0))
@@ -322,12 +327,12 @@ public class RegisterInfo extends JFrame implements ActionListener {
 						JOptionPane.showMessageDialog(this, "Your data saved..");
 				}
 
-				String s7 = tAccountNo.getText();
+				String s7 = tAccountNum.getText();
 				String reg7 = "^\\d+$";
 				Scanner sc7 = new Scanner(s7);
 				String result7 = sc7.findInLine(reg7);
 				if (result7 == null) {
-					tAccountNo.setText("");
+					tAccountNum.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid Account no. ....");
 					validAccN = 1;
 					if ((validName == 0) && (validAddress == 0) && (validPhone == 0) && (validEmail == 0) && (x == 0)
@@ -364,9 +369,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 
 	}
 
-	public static void main(String args[])
-
-	{
+	public static void main(String args[]){
 		new RegisterInfo("Register...");
 
 	}

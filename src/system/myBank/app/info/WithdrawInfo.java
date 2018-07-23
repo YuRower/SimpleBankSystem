@@ -2,10 +2,13 @@ package system.myBank.app.info;
 
 import java.awt.Color;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Year;
 
 import javax.swing.*;
 
@@ -17,43 +20,50 @@ import system.myBank.app.storage.TransactionOperation;
 
 public class WithdrawInfo extends JFrame implements ActionListener {
 
-	private JLabel withDraw, accN, amount, date, skip;
-	private JTextField tAccountNo, tAmount, tBalance;
+	private JLabel withDraw, accountNum, amount, date, skip;
+	private JTextField tAccountNum, tAmount, tBalance;
 	private JButton bOK;
 	private JComboBox boxDay, boxMonth, boxYear;
-	private int notFound, enterValidAcc = 0, enterValidAmo = 0;
+	private static final String ACCOUNT_PATTERN = "^\\d+$";
+	private Pattern pattern;
+	private Matcher matcher;
+	private final int MAX_DAY = 31;
+	private final int MAX_MONTH = 12;
+	private final int START_YEAR = 1898;
+	private int found, enterValidAcc = 0, enterValidAmo = 0;
 
-	ArrayList<Transaction> folder;
-	ArrayList<TransactionInfo> match;
+	ArrayList<Transaction> listTransaction;
+	ArrayList<TransactionInfo> listTransactionInfo;
 
 	public WithdrawInfo(String title) {
 		super(title);
 
-		folder = new ArrayList<Transaction>();
-		match = new ArrayList<TransactionInfo>();
+		listTransaction = new ArrayList<Transaction>();
+		listTransactionInfo = new ArrayList<TransactionInfo>();
 
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(5, 2));
 
-		String dataDay[] = new String[31];
-		for (int i = 0; i <= 30; i++) {
-			dataDay[i] = String.valueOf(i + 1);
+		String dValue[] = new String[MAX_DAY];
+		for (int i = 0; i <= MAX_DAY - 1; i++) {
+			dValue[i] = String.valueOf(i + 1);
 		}
-		boxDay = new JComboBox(dataDay);
+		boxDay = new JComboBox(dValue);
 
-		String dataMonth[] = new String[12];
-		for (int i = 0; i <= 11; i++) {
-			dataMonth[i] = String.valueOf(i + 1);
+		String mValue[] = new String[MAX_MONTH];
+		for (int i = 0; i <= MAX_MONTH - 1; i++) {
+			mValue[i] = String.valueOf(i + 1);
 		}
-		boxMonth = new JComboBox(dataMonth);
+		boxMonth = new JComboBox(mValue);
 
-		String dataYear[] = new String[112];
+		int year = Year.now().getValue();
+		String yValue[] = new String[year - START_YEAR + 1];
 		int cnt = 0;
-		for (int i = 1900; i <= 2011; i++) {
-			dataYear[cnt] = String.valueOf(i);
+		for (int i = START_YEAR; i <= year; i++) {
+			yValue[cnt] = String.valueOf(i);
 			cnt++;
 		}
-		boxYear = new JComboBox(dataYear);
+		boxYear = new JComboBox(yValue);
 
 		JPanel cpanel = new JPanel();
 		cpanel.add(boxDay);
@@ -67,10 +77,10 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 
 		withDraw.setForeground(Color.BLUE);
 
-		accN = new JLabel("     Account No:");
+		accountNum = new JLabel("     Account No:");
 
-		accN.setForeground(Color.BLACK);
-		tAccountNo = new JTextField(20);
+		accountNum.setForeground(Color.BLACK);
+		tAccountNum = new JTextField(20);
 
 		amount = new JLabel("     Amount:");
 
@@ -85,8 +95,8 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 
 		c.add(withDraw);
 		c.add(new JLabel(""));
-		c.add(accN);
-		c.add(tAccountNo);
+		c.add(accountNum);
+		c.add(tAccountNum);
 		c.add(amount);
 		c.add(tAmount);
 
@@ -98,64 +108,50 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 		setSize(450, 325);
 		setLocation(200, 200);
 		setResizable(false);
-		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-
-		String amount = tAmount.getText();
-		String accountno = tAccountNo.getText();
 		String withdraw = "";
-
+		String account = tAccountNum.getText();
+		String amount = tAmount.getText();
 		if (ae.getSource() == bOK) {
 
-			String s1 = tAccountNo.getText();
-			String reg = "^\\d+$";
-			Scanner sc = new Scanner(s1);
-			String result = sc.findInLine(reg);
+			pattern = Pattern.compile(ACCOUNT_PATTERN);
+			boolean result = validate(account);
+			boolean result1 = validate(amount);
 
-			if (result == null) {
-				tAccountNo.setText("");
+			if (!result) {
+				tAccountNum.setText("");
 				JOptionPane.showMessageDialog(this, "Enter Valid Account no..");
-				enterValidAcc = 1;
-				if ((enterValidAcc == 0) && (enterValidAmo == 0))
-					JOptionPane.showMessageDialog(this, "your amount will be debited..");
-			}
-
-			String s2 = tAmount.getText();
-			String reg1 = "^\\d+$";
-			Scanner sc1 = new Scanner(s2);
-			String result1 = sc1.findInLine(reg1);
-			if (result1 == null) {
+			} else if (!result1) {
 				tAmount.setText("");
 				JOptionPane.showMessageDialog(this, "Enter valid Amount...");
-				enterValidAmo = 1;
-				if ((enterValidAcc == 0) && (enterValidAmo == 0))
-					JOptionPane.showMessageDialog(this, "your amount will be debited..");
+			} else if ((result) && (result1)) {
+				JOptionPane.showMessageDialog(this, "your amount will be debited..");
 			}
 
-			if ((result != null) && (result1 != null))
-				JOptionPane.showMessageDialog(this, "your amount will be debited..");
-
-			Transaction ts = new Transaction(amount, accountno);
+			Transaction ts = new Transaction(amount, account);
 			TransactionOperation transOp = new TransactionOperation();
-			notFound = transOp.searchInfoID(ts);
+			found = transOp.searchInfoID(ts);
 
-			if (notFound == -1) {
+			if (found == -1) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
-			} else if ((result != null) && (result1 != null) && !(notFound == -1)) {
-				transOp.withdrawDetailStorage(ts, notFound);
+			} else if ((result) && (result1) && !(found == -1)) {
+				transOp.withdrawDetailStorage(ts, found);
 				new AmountDetailStorage();
 
-				TransactionInfo tr = new TransactionInfo(accountno, amount, "");
-				
+				TransactionInfo tr = new TransactionInfo(account, amount, "");
+
 				TransactionInfoOperation dt = new TransactionInfoOperation();
 				dt.addInfo(tr);
 			}
-
 		}
+	}
 
+	public boolean validate(final String accountID) {
+		matcher = pattern.matcher(accountID);
+		return matcher.matches();
 	}
 
 	public static void main(String args[]) {

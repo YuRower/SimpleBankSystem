@@ -2,10 +2,13 @@ package system.myBank.app.info;
 
 import java.awt.Color;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Year;
 
 import javax.swing.*;
 
@@ -16,182 +19,161 @@ import system.myBank.app.storage.TransactionInfoOperation;
 import system.myBank.app.storage.TransactionOperation;
 
 public class TransferInfo extends JFrame implements ActionListener {
-	ArrayList<Transaction> folder;
-	ArrayList<TransactionInfo> match;
+	ArrayList<Transaction> listTransaction;
+	ArrayList<TransactionInfo> listTransactionInfo;
 
-	private JLabel l1, l2, l3, l4, l5, l6, l7;
-	private JTextField tsourceaccount, ttargetaccount, tamount, tnetbalance;
-	private JButton bok;
+	private JLabel lTransfer, lSenderID, lAmount, l4, lDate, lSkip, lReceiver;
+	private JTextField senderAccount, receiverAccount, fieldAmount, fieldBalance;
+	private JButton bOK;
 	private JComboBox cday, cmonth, cyear;
-	private int a, b, m = 0, n = 0, l = 0;
+	private int findID, findID1;
+	private Pattern pattern;
+	private Matcher matcher;
+	private final int MAX_DAY = 31;
+	private final int MAX_MONTH = 12;
+	private final int START_YEAR = 1898;
+
+	private static final String FIND_ACCOUNT = "^[0-9]";
 
 	public TransferInfo(String title) {
 		super(title);
 
-		folder = new ArrayList<Transaction>();
-		match = new ArrayList<TransactionInfo>();
+		listTransaction = new ArrayList<Transaction>();
+		listTransactionInfo = new ArrayList<TransactionInfo>();
 
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(6, 2));
 
-		String dvalue[] = new String[31];
-		for (int i = 0; i <= 30; i++) {
-			dvalue[i] = String.valueOf(i + 1);
+		String dValue[] = new String[MAX_DAY];
+		for (int i = 0; i <= MAX_DAY - 1; i++) {
+			dValue[i] = String.valueOf(i + 1);
 		}
-		cday = new JComboBox(dvalue);
+		cday = new JComboBox(dValue);
 
-		String mvalue[] = new String[12];
-		for (int i = 0; i <= 11; i++) {
-			mvalue[i] = String.valueOf(i + 1);
+		String mValue[] = new String[MAX_MONTH];
+		for (int i = 0; i <= MAX_MONTH - 1; i++) {
+			mValue[i] = String.valueOf(i + 1);
 		}
-		cmonth = new JComboBox(mvalue);
+		cmonth = new JComboBox(mValue);
 
-		String yvalue[] = new String[112];
+		int year = Year.now().getValue();
+		String yValue[] = new String[year - START_YEAR + 1];
 		int cnt = 0;
-		for (int i = 1900; i <= 2011; i++) {
-			yvalue[cnt] = String.valueOf(i);
+		for (int i = START_YEAR; i <= year; i++) {
+			yValue[cnt] = String.valueOf(i);
 			cnt++;
 		}
-		cyear = new JComboBox(yvalue);
+		cyear = new JComboBox(yValue);
 
 		JPanel cpanel = new JPanel();
 		cpanel.add(cday);
 		cpanel.add(cmonth);
 		cpanel.add(cyear);
 
-		bok = new JButton("OK");
-		bok.addActionListener(this);
+		bOK = new JButton("OK");
+		bOK.addActionListener(this);
 
-		l1 = new JLabel("Fund Transfer");
+		lTransfer = new JLabel(" Transfer");
+		lTransfer.setForeground(Color.BLUE);
+		lSenderID = new JLabel("Source Account No:");
+		lSenderID.setForeground(Color.BLACK);
+		senderAccount = new JTextField(20);
+		lReceiver = new JLabel("Target Account No:");
+		lReceiver.setForeground(Color.BLACK);
+		receiverAccount = new JTextField(20);
+		lAmount = new JLabel("Amount:");
+		lAmount.setForeground(Color.BLACK);
+		fieldAmount = new JTextField(20);
+		lDate = new JLabel("Date:");
+		lDate.setForeground(Color.BLACK);
+		lSkip = new JLabel("");
 
-		l1.setForeground(Color.BLUE);
-
-		l2 = new JLabel("Source Account No:");
-
-		l2.setForeground(Color.BLACK);
-		tsourceaccount = new JTextField(20);
-
-		l7 = new JLabel("Target Account No:");
-
-		l7.setForeground(Color.BLACK);
-		ttargetaccount = new JTextField(20);
-
-		l3 = new JLabel("Amount:");
-
-		l3.setForeground(Color.BLACK);
-		tamount = new JTextField(20);
-
-		/*
-		 * l4=new JLabel("Net Balance:"); l4.setFont(f2); l4.setForeground(Color.BLACK);
-		 * tnetbalance=new JTextField(20);
-		 */
-
-		l5 = new JLabel("Date:");
-
-		l5.setForeground(Color.BLACK);
-
-		l6 = new JLabel("");
-
-		c.add(l1);
+		c.add(lTransfer);
 		c.add(new JLabel(""));
-		c.add(l2);
-		c.add(tsourceaccount);
-		c.add(l7);
-		c.add(ttargetaccount);
-		c.add(l3);
-		c.add(tamount);
+		c.add(lSenderID);
+		c.add(senderAccount);
+		c.add(lReceiver);
+		c.add(receiverAccount);
+		c.add(lAmount);
+		c.add(fieldAmount);
 
-		c.add(l5);
+		c.add(lDate);
 		c.add(cpanel);
-		c.add(l6);
-		c.add(bok);
+		c.add(lSkip);
+		c.add(bOK);
 
 		setSize(450, 325);
 		setLocation(200, 200);
 		setResizable(false);
-		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent ae) {
 
-		String amount = tamount.getText();
-		String accountno1 = tsourceaccount.getText();
-		String accountno2 = ttargetaccount.getText();
+		String amount = fieldAmount.getText();
+		String accountSend = senderAccount.getText();
+		String accountReceive = receiverAccount.getText();
 		String credit = "";
 		String debit = "";
 
-		if (ae.getSource() == bok) {
+		if (ae.getSource() == bOK) {
 
-			String s1 = tsourceaccount.getText();
-			String reg1 = "^[0-9]";
-			Scanner sc1 = new Scanner(s1);
-			String result1 = sc1.findInLine(reg1);
+			String sender = senderAccount.getText();
+			String receiver = receiverAccount.getText();
+			String fAmount = fieldAmount.getText();
 
-			if (result1 == null) {
-				tsourceaccount.setText("");
+			pattern = Pattern.compile(FIND_ACCOUNT);
+			boolean result1 = validate(sender);
+			boolean result2 = validate(receiver);
+			boolean result3 = validate(fAmount);
+
+			if (!result1) {
+				senderAccount.setText("");
 				JOptionPane.showMessageDialog(this, "Enter Valid Source Account no..");
-				m = 1;
-				if ((m == 0) && (n == 0) && (l == 0))
-					JOptionPane.showMessageDialog(this, "your amount will be credited..");
-			}
-
-			String s2 = ttargetaccount.getText();
-			String reg2 = "^[0-9]";
-			Scanner sc2 = new Scanner(s2);
-			String result2 = sc2.findInLine(reg2);
-
-			if (result2 == null) {
-				ttargetaccount.setText("");
+			} else if (!result2) {
+				receiverAccount.setText("");
 				JOptionPane.showMessageDialog(this, "Enter Valid Target Account no..");
-				l = 1;
-				if ((m == 0) && (n == 0) && (l == 0))
-					JOptionPane.showMessageDialog(this, "your amount will be credited..");
-			}
-
-			String s3 = tamount.getText();
-			String reg3 = "^[0-9]";
-			Scanner sc3 = new Scanner(s3);
-			String result3 = sc3.findInLine(reg3);
-			if (result3 == null) {
-				tamount.setText("");
+			} else if (!result3) {
+				fieldAmount.setText("");
 				JOptionPane.showMessageDialog(this, "Enter valid Amount...");
-				n = 1;
-				if ((m == 0) && (n == 0) && (l == 0))
-					JOptionPane.showMessageDialog(this, "your amount will be debited..");
+
 			}
 
-			if ((result1 != null) && (result2 != null) && (result3 != null))
+			if ((result1) && (result2) && (result3))
 				JOptionPane.showMessageDialog(this, "your amount will be updated..");
 
-			Transaction ts1 = new Transaction(amount, accountno1);
+			Transaction ts1 = new Transaction(amount, accountSend);
 			TransactionOperation transOp1 = new TransactionOperation();
-			a = transOp1.searchInfoID(ts1);
+			findID = transOp1.searchInfoID(ts1);
 
-			if (a == -1) {
-				JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT NO.FOUND");
+			if (findID == -1) {
+				JOptionPane.showMessageDialog(this, "SENDER ACCOUNT NO.FOUND");
 			} else {
-
-				Transaction ts2 = new Transaction(amount, accountno2);
+				Transaction ts2 = new Transaction(amount, accountReceive);
 				TransactionOperation transOp2 = new TransactionOperation();
-				b = transOp2.searchInfoID(ts2);
+				findID1 = transOp2.searchInfoID(ts2);
 
-				if (b == -1) {
-					JOptionPane.showMessageDialog(this, "NO SUCH ACCOUNT NO.FOUND");
+				if (findID1 == -1) {
+					JOptionPane.showMessageDialog(this, "RECEIVER ACCOUNT NO.FOUND");
 				} else {
-					transOp2.withdrawDetailStorage(ts1, a);
-					TransactionInfo tn = new TransactionInfo(accountno1, amount, credit);
+					transOp2.withdrawDetailStorage(ts1, findID);
+					TransactionInfo tn = new TransactionInfo(accountSend, amount, credit);
 					TransactionInfoOperation dh = new TransactionInfoOperation();
 					dh.addInfo(tn);
-
-					transOp2.depositDetailStorage(ts2, b);
-					TransactionInfo tg = new TransactionInfo(accountno2, debit, amount);
+					transOp2.depositDetailStorage(ts2, findID1);
+					TransactionInfo tg = new TransactionInfo(accountReceive, debit, amount);
 					TransactionInfoOperation da = new TransactionInfoOperation();
 					dh.addInfo(tg);
 					new AmountDetailStorage();
 				}
 			}
 		}
+
+	}
+
+	public boolean validate(final String accountID) {
+		matcher = pattern.matcher(accountID);
+		return matcher.matches();
 
 	}
 

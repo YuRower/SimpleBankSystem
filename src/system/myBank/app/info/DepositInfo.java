@@ -2,7 +2,10 @@ package system.myBank.app.info;
 
 import java.awt.Color;
 import java.io.*;
+import java.time.Year;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,65 +19,77 @@ import system.myBank.app.storage.AmountDetailStorage;
 import system.myBank.app.storage.TransactionInfoOperation;
 import system.myBank.app.storage.TransactionOperation;
 
+enum EnterValid {
+	INVALID_ENTER, VALID_ENTER;
+}
+
 public class DepositInfo extends JFrame implements ActionListener {
+	public EnterValid enterValid, validAccount, validAmount;
 
-	private JLabel depos, accNo, amou, date, skip;
-	private JTextField tAccountNo, tAmount, tBalance;
-	private JButton bok;
+	private JLabel cashDeposit, accountNum, amount, date, skip;
+	private JTextField tAccountNum, tAmount, tBalance;
+	private JButton bOK;
 	private JComboBox cbDay, cbMonth, cbYear;
-	private int norFound, enterValidAcc = 0, enterValidAmou = 0;
+	private int found;
+	private Pattern pattern;
+	private Matcher matcher;
+	private final int MAX_DAY = 31;
+	private final int MAX_MONTH = 12;
+	private final int START_YEAR = 1898;
 
-	ArrayList<Transaction> folder;
-	ArrayList<TransactionInfo> match;
+	private static final String NUMBER_PATTERN = "^\\d+$";
+
+	ArrayList<Transaction> listTransaction;
+	ArrayList<TransactionInfo> listTransInfo;
 
 	public DepositInfo(String title) {
 		super(title);
-
-		folder = new ArrayList<Transaction>();
-		match = new ArrayList<TransactionInfo>();
+		listTransaction = new ArrayList<Transaction>();
+		listTransInfo = new ArrayList<TransactionInfo>();
 
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(5, 2));
 
-		String dvalue[] = new String[31];
-		for (int i = 0; i <= 30; i++) {
-			dvalue[i] = String.valueOf(i + 1);
+		String dValue[] = new String[MAX_DAY];
+		for (int i = 0; i <= MAX_DAY - 1; i++) {
+			dValue[i] = String.valueOf(i + 1);
 		}
-		cbDay = new JComboBox(dvalue);
+		cbDay = new JComboBox(dValue);
 
-		String mvalue[] = new String[12];
-		for (int i = 0; i <= 11; i++) {
-			mvalue[i] = String.valueOf(i + 1);
+		String mValue[] = new String[MAX_MONTH];
+		for (int i = 0; i <= MAX_MONTH - 1; i++) {
+			mValue[i] = String.valueOf(i + 1);
 		}
-		cbMonth = new JComboBox(mvalue);
+		cbMonth = new JComboBox(mValue);
 
-		String yvalue[] = new String[112];
+		int year = Year.now().getValue();
+		String yValue[] = new String[year - START_YEAR + 1];
 		int cnt = 0;
-		for (int i = 1900; i <= 2011; i++) {
-			yvalue[cnt] = String.valueOf(i);
+		for (int i = START_YEAR; i <= year; i++) {
+			yValue[cnt] = String.valueOf(i);
 			cnt++;
 		}
-		cbYear = new JComboBox(yvalue);
+		cbYear = new JComboBox(yValue);
 
 		JPanel cpanel = new JPanel();
 		cpanel.add(cbDay);
 		cpanel.add(cbMonth);
 		cpanel.add(cbYear);
 
-		bok = new JButton("OK");
-		bok.addActionListener(this);
+		bOK = new JButton("OK");
+		bOK.addActionListener(this);
 
-		depos = new JLabel("  Cash Deposit");
-		depos.setForeground(Color.BLUE);
+		cashDeposit = new JLabel("  Cash Deposit");
+		cashDeposit.setForeground(Color.BLUE);
 
-		accNo = new JLabel("     Account No:");
+		accountNum = new JLabel("     Account No:");
 
-		accNo.setForeground(Color.BLACK);
-		tAccountNo = new JTextField(20);
+		accountNum.setForeground(Color.BLACK);
+		tAccountNum = new JTextField(20);
 
-		amou = new JLabel("     Amount:");
+		amount = new JLabel("     Amount:");
 
-		amou.setForeground(Color.BLACK);
+		amount.setForeground(Color.BLACK);
 		tAmount = new JTextField(20);
 
 		date = new JLabel("     Date:");
@@ -83,17 +98,17 @@ public class DepositInfo extends JFrame implements ActionListener {
 
 		skip = new JLabel("");
 
-		c.add(depos);
+		c.add(cashDeposit);
 		c.add(new JLabel(""));
-		c.add(accNo);
-		c.add(tAccountNo);
-		c.add(amou);
+		c.add(accountNum);
+		c.add(tAccountNum);
+		c.add(amount);
 		c.add(tAmount);
 
 		c.add(date);
 		c.add(cpanel);
 		c.add(skip);
-		c.add(bok);
+		c.add(bOK);
 
 		setSize(450, 325);
 		setLocation(200, 200);
@@ -104,49 +119,40 @@ public class DepositInfo extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 
 		String amount = tAmount.getText();
-		String accountno = tAccountNo.getText();
+		String accountNum = tAccountNum.getText();
 		String deposit = "";
 
-		if (ae.getSource() == bok) {
+		if (ae.getSource() == bOK) {
 
-			String s1 = tAccountNo.getText();
-			String reg = "^\\d+$";
-			Scanner sc = new Scanner(s1);
-			String result = sc.findInLine(reg);
+			pattern = Pattern.compile(NUMBER_PATTERN);
+			boolean result = validate(accountNum);
+			boolean result1 = validate(amount);
 
-			if (result == null) {
-				tAccountNo.setText("");
+			if (!result) {
+				tAccountNum.setText("");
 				JOptionPane.showMessageDialog(this, "Enter Valid Account no..");
-				enterValidAcc = 1;
-				if ((enterValidAcc == 0) && (enterValidAmou == 0))
-					JOptionPane.showMessageDialog(this, "your amount will be credited..");
-			}
+				enterValid = EnterValid.INVALID_ENTER;
 
-			String s2 = tAmount.getText();
-			String reg1 = "^\\d+$";
-			Scanner sc1 = new Scanner(s2);
-			String result1 = sc1.findInLine(reg1);
-			if (result1 == null) {
+			} else if (!result1) {
 				tAmount.setText("");
 				JOptionPane.showMessageDialog(this, "Enter valid Amount...");
-				enterValidAmou = 1;
-				if ((enterValidAcc == 0) && (enterValidAmou == 0))
-					JOptionPane.showMessageDialog(this, "your amount will be credited..");
+				validAmount = EnterValid.INVALID_ENTER;
+
 			}
 
-			if ((result != null) && (result1 != null))
-				JOptionPane.showMessageDialog(this, "your amount will be credited..");
-
-			Transaction ts = new Transaction(amount, accountno);
+			Transaction ts = new Transaction(amount, accountNum);
 			TransactionOperation transaction = new TransactionOperation();
-			norFound = transaction.searchInfoID(ts);
+			found = transaction.searchInfoID(ts);
 
-			if (norFound == -1) {
+			if (found == -1) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
 			}
-			if ((result != null) && (result1 != null) && !(norFound == -1)) {
-				TransactionInfo tr = new TransactionInfo(accountno, "", amount);
-				transaction.depositDetailStorage(ts, norFound);
+
+			if ((result) && (result1) && !(found == -1)) {
+				JOptionPane.showMessageDialog(this, "your amount will be credited..");
+
+				TransactionInfo tr = new TransactionInfo(accountNum, "", amount);
+				transaction.depositDetailStorage(ts, found);
 				new AmountDetailStorage();
 
 				TransactionInfoOperation dt = new TransactionInfoOperation();
@@ -155,6 +161,12 @@ public class DepositInfo extends JFrame implements ActionListener {
 			}
 
 		}
+	}
+
+	public boolean validate(final String accountID) {
+		matcher = pattern.matcher(accountID);
+		return matcher.matches();
+
 	}
 
 	public static void main(String args[]) {
