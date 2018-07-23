@@ -1,7 +1,10 @@
 package system.myBank.app.info;
 
 import java.awt.Color;
+
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.Container;
 
 import java.awt.GridLayout;
@@ -14,11 +17,16 @@ import javax.swing.*;
 import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
+import system.myBank.app.security.Regexp;
 import system.myBank.app.storage.CustomerDetailStorage;
 import system.myBank.app.storage.RegisterOperation;
 //import system.myBank.app.storage.AddRegistrDetailStorage;
 import system.myBank.app.storage.SearchDetailStorage;
 import system.myBank.app.storage.TransactionOperation;
+
+enum RegisterValid {
+	INVALID_ENTER;
+}
 
 public class RegisterInfo extends JFrame implements ActionListener {
 	public static String name;
@@ -26,7 +34,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 	public RegisterOperation register = new RegisterOperation();
 	public TransactionOperation transaction = new TransactionOperation();
 	private JLabel lName, lDob, lGender, lPhoneN, lAdress, lEmail, lAccType, lDepAmo, l12, laccNo, regstr;
-	public JTextField tname;
+	public JTextField tName;
 	private JTextField tPhoneNum;
 	private JTextField tAddress;
 	private JTextField tEmailId;
@@ -37,10 +45,12 @@ public class RegisterInfo extends JFrame implements ActionListener {
 	private final int MAX_DAY = 31;
 	private final int MAX_MONTH = 12;
 	private final int START_YEAR = 1898;
+	private Pattern pattern;
+	private Matcher matcher;
 
 	private JRadioButton rmale, rfemale, rsaving, rcurrent;
-	private int a, a1, validName = 0, validAddress = 0, validPhone = 0, validEmail = 0, x = 0, validDepositAm = 0,
-			validAccN = 0, withdrawalamount = 0;
+	private int findID;
+	RegisterValid validName, validAddress, validPhone, validEmail, validDepositAm, validAccN, withdrawalamount;
 
 	ArrayList<Registration> listRegister;
 	ArrayList<Transaction> listTransaction;
@@ -55,7 +65,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(16, 2));
 
-		tname = new JTextField(20);
+		tName = new JTextField(20);
 		tPhoneNum = new JTextField(20);
 		tAddress = new JTextField(20);
 		tEmailId = new JTextField(20);
@@ -97,27 +107,27 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		gpanel2.add(rsaving);
 		gpanel2.add(rcurrent);
 
-		String dvalue[] = new String[MAX_DAY];
+		String dValue[] = new String[MAX_DAY];
 		for (int i = 0; i <= MAX_DAY - 1; i++) {
-			dvalue[i] = String.valueOf(i + 1);
+			dValue[i] = String.valueOf(i + 1);
 		}
-		day = new JComboBox(dvalue);
+		day = new JComboBox(dValue);
 
-		String mvalue[] = new String[MAX_MONTH];
+		String mValue[] = new String[MAX_MONTH];
 		for (int i = 0; i <= MAX_MONTH - 1; i++) {
-			mvalue[i] = String.valueOf(i + 1);
+			mValue[i] = String.valueOf(i + 1);
 		}
-		month = new JComboBox(mvalue);
+		month = new JComboBox(mValue);
 
 		int currentYear = Year.now().getValue();
 
-		String yvalue[] = new String[currentYear - START_YEAR + 1];
+		String yValue[] = new String[currentYear - START_YEAR + 1];
 		int cnt = 0;
 		for (int i = START_YEAR; i <= currentYear; i++) {
-			yvalue[cnt] = String.valueOf(i);
+			yValue[cnt] = String.valueOf(i);
 			cnt++;
 		}
-		year = new JComboBox(yvalue);
+		year = new JComboBox(yValue);
 
 		JPanel cpanel = new JPanel();
 		cpanel.add(day);
@@ -173,7 +183,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		c.add(regstr);
 		c.add(new JLabel(""));
 		c.add(lName);
-		c.add(tname);
+		c.add(tName);
 		c.add(lDob);
 		c.add(cpanel);
 		c.add(lGender);
@@ -206,14 +216,11 @@ public class RegisterInfo extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		int f = -1;
-
-		String name = tname.getText();
-
-		String phoneno = tPhoneNum.getText();
+		String name = tName.getText();
+		String phoneNum = tPhoneNum.getText();
 		String address = tAddress.getText();
-		String emailid = tEmailId.getText();
-		String depositamount = tDepositAmount.getText();
+		String emailID = tEmailId.getText();
+		String depositAmount = tDepositAmount.getText();
 		String accountno = tAccountNum.getText();
 
 		String gender = "";
@@ -233,116 +240,85 @@ public class RegisterInfo extends JFrame implements ActionListener {
 		String d = (String) day.getSelectedItem();
 		String m = (String) month.getSelectedItem();
 		String y = (String) year.getSelectedItem();
-		String dob = d + "-" + m + "-" + y;
-
-		Registration r = new Registration(name, phoneno, address, emailid, depositamount, accountno, gender,
+		String dob = String.format("%1$s - %2$s - %3$s", d, m, y);
+		Registration r = new Registration(name, phoneNum, address, emailID, depositAmount, accountno, gender,
 				accounttype, dob);
-		Transaction ts = new Transaction(depositamount, accountno);
+		Transaction ts = new Transaction(depositAmount, accountno);
 
 		RegisterOperation scr = new RegisterOperation();
-		a = scr.searchInfoID(r);
+		findID = scr.searchInfoID(r);
 
 		if (ae.getSource() == rmale) {
 			JOptionPane.showMessageDialog(this, "Your Gender : Male");
 		} else if (ae.getSource() == rfemale) {
 			JOptionPane.showMessageDialog(this, "Your Gender : Female");
-
 		}
-
 		else if (ae.getSource() == rsaving) {
-
 			JOptionPane.showMessageDialog(this, "Your account type : Saving");
 		}
-
 		else if (ae.getSource() == rcurrent) {
 			JOptionPane.showMessageDialog(this, "Your account type : Current");
 		}
-
 		if (ae.getSource() == bSubmit) {
-
 			int con = JOptionPane.showConfirmDialog(this, "Are You Sure to Register?");
-
 			if (con == JOptionPane.YES_OPTION) {
-
-				String s1 = tname.getText();
-				String reg1 = "^[a-zA-Z.]";
-				Scanner sc1 = new Scanner(s1);
-				String result1 = sc1.findInLine(reg1);
-
-				if (result1 == null) {
-					tname.setText("");
+				String fieldName = tName.getText();
+				pattern = Pattern.compile(Regexp.NAME_PATTERN);
+				boolean result1 = validate(fieldName);
+				if (!result1) {
+					tName.setText("");
 					JOptionPane.showMessageDialog(this, "Enter Valid Name..");
-					validName = 1;
-					if ((validName == 0) && (validAddress == 0) && (validPhone == 0))
-						JOptionPane.showMessageDialog(this, "Your data saved..");
+					validName = RegisterValid.INVALID_ENTER;
 				}
-
-				String s2 = tPhoneNum.getText();
-				String reg2 = "\\d{10}";
-				Scanner sc2 = new Scanner(s2);
-				String result2 = sc2.findInLine(reg2);
-
-				if (result2 == null) {
+				String fieldPhoneNum = tPhoneNum.getText();
+				pattern = Pattern.compile(Regexp.PHONE_PATTERN);
+				boolean result2 = validate(fieldName);
+				if (!result2) {
 					tPhoneNum.setText("");
 					JOptionPane.showMessageDialog(this, "Enter Valid phone no...");
-					validPhone = 1;
-					if ((validName == 0) && (validAddress == 0) && (validPhone == 0))
-						JOptionPane.showMessageDialog(this, "Your data saved..");
+					validPhone = RegisterValid.INVALID_ENTER;
 				}
-
-				String s3 = tAddress.getText();
-				String reg3 = "^[a-zA-Z0-9.,]";
-				Scanner sc3 = new Scanner(s3);
-				String result3 = sc3.findInLine(reg3);
-				if (result3 == null) {
+				String fieldAddress = tAddress.getText();
+				pattern = Pattern.compile(Regexp.ADDRESS_PATTERN);
+				boolean result3 = validate(fieldName);
+				if (result3) {
 					tAddress.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid Address...");
-					validAddress = 1;
-					if ((validName == 0) && (validAddress == 0) && (validPhone == 0))
-						JOptionPane.showMessageDialog(this, "Your data saved..");
+					validAddress = RegisterValid.INVALID_ENTER;
 				}
-
-				String s4 = tEmailId.getText();
-				String reg4 = "^[a-zA-Z0-9_@.]";
-				Scanner sc4 = new Scanner(s4);
-				String result4 = sc4.findInLine(reg4);
-				if (result4 == null) {
+				String fieldEmail = tEmailId.getText();
+				pattern = Pattern.compile(Regexp.EMAIL_PATTERN);
+				boolean result4 = validate(fieldName);
+				if (result4) {
 					tEmailId.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid emailid...");
-					validEmail = 1;
-					if ((validName == 0) && (validAddress == 0) && (validPhone == 0) && (validEmail == 0))
-						JOptionPane.showMessageDialog(this, "Your data saved..");
+					validEmail = RegisterValid.INVALID_ENTER;
 				}
-
-				String s6 = tDepositAmount.getText();
-				String reg6 = "^\\d+$";
-				Scanner sc6 = new Scanner(s6);
-				String result6 = sc6.findInLine(reg6);
-				if (result6 == null) {
+				String fieldDeposit = tDepositAmount.getText();
+				pattern = Pattern.compile(Regexp.ACCOUNT_PATTERN);
+				boolean result5 = validate(fieldName);
+				if (result5) {
 					tDepositAmount.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid Deposit Amount....");
-					validDepositAm = 1;
-					if ((validName == 0) && (validAddress == 0) && (validPhone == 0) && (validEmail == 0) && (x == 0)
-							&& (validDepositAm == 0))
-						JOptionPane.showMessageDialog(this, "Your data saved..");
+					validDepositAm = RegisterValid.INVALID_ENTER;
 				}
-
-				String s7 = tAccountNum.getText();
-				String reg7 = "^\\d+$";
-				Scanner sc7 = new Scanner(s7);
-				String result7 = sc7.findInLine(reg7);
-				if (result7 == null) {
+				String fieldAccount = tAccountNum.getText();
+				pattern = Pattern.compile(Regexp.ACCOUNT_PATTERN);
+				boolean result6 = validate(fieldAccount);
+				if (result6) {
 					tAccountNum.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid Account no. ....");
-					validAccN = 1;
-					if ((validName == 0) && (validAddress == 0) && (validPhone == 0) && (validEmail == 0) && (x == 0)
-							&& (validDepositAm == 0) && (validAccN == 0))
+					validAccN = RegisterValid.INVALID_ENTER;
+					if (!(validName == RegisterValid.INVALID_ENTER) && !(validAddress == RegisterValid.INVALID_ENTER)
+							&& !(validPhone == RegisterValid.INVALID_ENTER)
+							&& !(validEmail == RegisterValid.INVALID_ENTER)
+							&& !(validDepositAm == RegisterValid.INVALID_ENTER)
+							&& !(validAccN == RegisterValid.INVALID_ENTER))
 						JOptionPane.showMessageDialog(this, "Your data saved..");
 				}
 
-				if ((result1 != null) && (result2 != null) && (result3 != null) && (result4 != null)
-						&& (result6 != null) && (result7 != null)) {
-					if (a != -1) {
+				if ((result1) && (result2) && (result3) && (result4) && (result5) && (result6)) {
+					if (findID != -1) {
 						JOptionPane.showMessageDialog(this,
 								"This account already exists. Please enter another no.acc...");
 					} else {
@@ -354,22 +330,23 @@ public class RegisterInfo extends JFrame implements ActionListener {
 
 			}
 		}
-
 		else if (ae.getSource() == bReset) {
 			new CustomerDetailStorage();
 		}
-
 		else if (ae.getSource() == bSearch) {
-			if (a == -1) {
+			if (findID == -1) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
 			} else {
-				new SearchDetailStorage(a);
+				new SearchDetailStorage(findID);
 			}
 		}
 
 	}
-
-	public static void main(String args[]){
+	public boolean validate(String str) {
+		matcher = pattern.matcher(str);
+		return matcher.matches();
+	}
+	public static void main(String args[]) {
 		new RegisterInfo("Register...");
 
 	}

@@ -14,6 +14,7 @@ import javax.swing.*;
 
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
+import system.myBank.app.security.Regexp;
 import system.myBank.app.storage.AmountDetailStorage;
 import system.myBank.app.storage.TransactionInfoOperation;
 import system.myBank.app.storage.TransactionOperation;
@@ -33,7 +34,6 @@ public class TransferInfo extends JFrame implements ActionListener {
 	private final int MAX_MONTH = 12;
 	private final int START_YEAR = 1898;
 
-	private static final String FIND_ACCOUNT = "^[0-9]";
 
 	public TransferInfo(String title) {
 		super(title);
@@ -122,7 +122,7 @@ public class TransferInfo extends JFrame implements ActionListener {
 			String receiver = receiverAccount.getText();
 			String fAmount = fieldAmount.getText();
 
-			pattern = Pattern.compile(FIND_ACCOUNT);
+			pattern = Pattern.compile(Regexp.NUMBER_PATTERN);
 			boolean result1 = validate(sender);
 			boolean result2 = validate(receiver);
 			boolean result3 = validate(fAmount);
@@ -171,10 +171,9 @@ public class TransferInfo extends JFrame implements ActionListener {
 
 	}
 
-	public boolean validate(final String accountID) {
-		matcher = pattern.matcher(accountID);
-		return matcher.matches();
-
+	public boolean validate (final String str) {
+		matcher = pattern.matcher(str);
+		return matcher.matches();		
 	}
 
 	public static void main(String args[]) {

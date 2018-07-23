@@ -15,6 +15,7 @@ import javax.swing.*;
 
 import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
+import system.myBank.app.security.Regexp;
 import system.myBank.app.storage.AmountDetailStorage;
 import system.myBank.app.storage.CustomerDetailStorage;
 import system.myBank.app.storage.RegisterOperation;
@@ -33,7 +34,6 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 	private JButton buttonOK;
 	private JTextField fieldID;
 	private int notFoundRegister, notFoundTransaction;
-	private static final String NUMBER_PATTERN = "^[0-9]";
 	private Pattern pattern;
 	private Matcher matcher;
 	public RegisterOperation register = new RegisterOperation();
@@ -81,7 +81,7 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 		if (ae.getSource() == buttonOK) {
 
 			String accountID = String.valueOf(fieldID.getText());
-			pattern = Pattern.compile(NUMBER_PATTERN);
+			pattern = Pattern.compile(Regexp.NUMBER_PATTERN);
 			boolean result = validate(accountID);
 
 			if (!result) {
@@ -103,7 +103,7 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 			TransactionOperation transaction = new TransactionOperation();
 			notFoundTransaction = transaction.searchInfoID(tst);
 
-			if (notFoundTransaction == -1) {
+			if (notFoundTransaction == -1 ) {
 				JOptionPane.showMessageDialog(this, "NO SUCH Transaction FOUND");
 			} else {
 				transaction.removeInfo(notFoundTransaction);
@@ -121,11 +121,11 @@ public class DeleteAccountInfo extends JFrame implements ActionListener {
 
 	}
 
-	public boolean validate(final String accountID) {
-		matcher = pattern.matcher(accountID);
-		return matcher.matches();
-
+	public boolean validate (final String str) {
+		matcher = pattern.matcher(str);
+		return matcher.matches();		
 	}
+
 
 	public static void main(String[] args) {
 		new DeleteAccountInfo(" Delete Account ");

@@ -15,6 +15,7 @@ import javax.swing.*;
 
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
+import system.myBank.app.security.Regexp;
 import system.myBank.app.storage.AmountDetailStorage;
 import system.myBank.app.storage.TransactionInfoOperation;
 import system.myBank.app.storage.TransactionOperation;
@@ -37,7 +38,6 @@ public class DepositInfo extends JFrame implements ActionListener {
 	private final int MAX_MONTH = 12;
 	private final int START_YEAR = 1898;
 
-	private static final String NUMBER_PATTERN = "^\\d+$";
 
 	ArrayList<Transaction> listTransaction;
 	ArrayList<TransactionInfo> listTransInfo;
@@ -124,7 +124,7 @@ public class DepositInfo extends JFrame implements ActionListener {
 
 		if (ae.getSource() == bOK) {
 
-			pattern = Pattern.compile(NUMBER_PATTERN);
+			pattern = Pattern.compile(Regexp.ACCOUNT_PATTERN);
 			boolean result = validate(accountNum);
 			boolean result1 = validate(amount);
 
@@ -144,7 +144,7 @@ public class DepositInfo extends JFrame implements ActionListener {
 			TransactionOperation transaction = new TransactionOperation();
 			found = transaction.searchInfoID(ts);
 
-			if (found == -1) {
+			if (found == -1 & validAmount==EnterValid.INVALID_ENTER & enterValid==EnterValid.INVALID_ENTER) {
 				JOptionPane.showMessageDialog(this, "NO DATA FOUND");
 			}
 
@@ -163,10 +163,9 @@ public class DepositInfo extends JFrame implements ActionListener {
 		}
 	}
 
-	public boolean validate(final String accountID) {
-		matcher = pattern.matcher(accountID);
+	public boolean validate(final String str) {
+		matcher = pattern.matcher(str);
 		return matcher.matches();
-
 	}
 
 	public static void main(String args[]) {

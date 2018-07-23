@@ -14,6 +14,7 @@ import javax.swing.*;
 
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
+import system.myBank.app.security.Regexp;
 import system.myBank.app.storage.AmountDetailStorage;
 import system.myBank.app.storage.TransactionInfoOperation;
 import system.myBank.app.storage.TransactionOperation;
@@ -24,7 +25,6 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 	private JTextField tAccountNum, tAmount, tBalance;
 	private JButton bOK;
 	private JComboBox boxDay, boxMonth, boxYear;
-	private static final String ACCOUNT_PATTERN = "^\\d+$";
 	private Pattern pattern;
 	private Matcher matcher;
 	private final int MAX_DAY = 31;
@@ -117,7 +117,7 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 		String amount = tAmount.getText();
 		if (ae.getSource() == bOK) {
 
-			pattern = Pattern.compile(ACCOUNT_PATTERN);
+			pattern = Pattern.compile(Regexp.ACCOUNT_PATTERN);
 			boolean result = validate(account);
 			boolean result1 = validate(amount);
 
@@ -149,9 +149,9 @@ public class WithdrawInfo extends JFrame implements ActionListener {
 		}
 	}
 
-	public boolean validate(final String accountID) {
-		matcher = pattern.matcher(accountID);
-		return matcher.matches();
+	public boolean validate (final String str) {
+		matcher = pattern.matcher(str);
+		return matcher.matches();		
 	}
 
 	public static void main(String args[]) {
