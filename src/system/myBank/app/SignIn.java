@@ -21,8 +21,24 @@ import system.myBank.chat.server.ChatServer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.SimpleLayout;
+import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.log4j.xml.XMLLayout;
 
 public class SignIn extends JFrame implements ActionListener {
+	static {
+		new DOMConfigurator().doConfigure("log4j.xml", LogManager.getLoggerRepository());
+	}
+	
+	static Logger logger = Logger.getLogger(SignIn.class);
+
 	public static boolean accessGranted;
 	private final JLabel author;
 	private final JLabel welcome;
@@ -53,10 +69,13 @@ public class SignIn extends JFrame implements ActionListener {
 
 	public SignIn(String title) {
 		super(title);
+		logger.info("Start app");
+
 		try {
 			bg = ImageIO.read(new File("background.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.error("image didnt load");
 		}
 		JPanel statusBar = new JPanel() {
 

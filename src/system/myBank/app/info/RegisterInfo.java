@@ -14,6 +14,8 @@ import java.time.Year;
 
 import javax.swing.*;
 
+import org.apache.log4j.Logger;
+
 import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
@@ -47,6 +49,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 	private final int START_YEAR = 1898;
 	private Pattern pattern;
 	private Matcher matcher;
+	static Logger logger = Logger.getLogger(RegisterInfo.class);
 
 	private JRadioButton rmale, rfemale, rsaving, rcurrent;
 	private int findID;
@@ -265,6 +268,7 @@ public class RegisterInfo extends JFrame implements ActionListener {
 				String fieldName = tName.getText();
 				pattern = Pattern.compile(Regexp.NAME_PATTERN);
 				boolean result1 = validate(fieldName);
+				logger.debug(result1+"Regexp.NAME_PATTERN");
 				if (!result1) {
 					tName.setText("");
 					JOptionPane.showMessageDialog(this, "Enter Valid Name..");
@@ -272,7 +276,9 @@ public class RegisterInfo extends JFrame implements ActionListener {
 				}
 				String fieldPhoneNum = tPhoneNum.getText();
 				pattern = Pattern.compile(Regexp.PHONE_PATTERN);
-				boolean result2 = validate(fieldName);
+				boolean result2 = validate(fieldPhoneNum);
+				logger.debug(result2+"Regexp.PHONE_PATTERN");
+
 				if (!result2) {
 					tPhoneNum.setText("");
 					JOptionPane.showMessageDialog(this, "Enter Valid phone no...");
@@ -280,24 +286,30 @@ public class RegisterInfo extends JFrame implements ActionListener {
 				}
 				String fieldAddress = tAddress.getText();
 				pattern = Pattern.compile(Regexp.ADDRESS_PATTERN);
-				boolean result3 = validate(fieldName);
-				if (result3) {
+				boolean result3 = validate(fieldAddress);
+				logger.debug(result3+"Regexp.ADDRESS_PATTERN");
+
+				if (!result3) {
 					tAddress.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid Address...");
 					validAddress = RegisterValid.INVALID_ENTER;
 				}
 				String fieldEmail = tEmailId.getText();
 				pattern = Pattern.compile(Regexp.EMAIL_PATTERN);
-				boolean result4 = validate(fieldName);
-				if (result4) {
+				boolean result4 = validate(fieldEmail);
+				logger.debug(result4+"Regexp.EMAIL_PATTERN");
+
+				if (!result4) {
 					tEmailId.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid emailid...");
 					validEmail = RegisterValid.INVALID_ENTER;
 				}
 				String fieldDeposit = tDepositAmount.getText();
 				pattern = Pattern.compile(Regexp.ACCOUNT_PATTERN);
-				boolean result5 = validate(fieldName);
-				if (result5) {
+				boolean result5 = validate(fieldDeposit);
+				logger.debug(result5+"Regexp.ACCOUNT_PATTERN");
+
+				if (!result5) {
 					tDepositAmount.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid Deposit Amount....");
 					validDepositAm = RegisterValid.INVALID_ENTER;
@@ -305,7 +317,9 @@ public class RegisterInfo extends JFrame implements ActionListener {
 				String fieldAccount = tAccountNum.getText();
 				pattern = Pattern.compile(Regexp.ACCOUNT_PATTERN);
 				boolean result6 = validate(fieldAccount);
-				if (result6) {
+				logger.debug(result6+"Regexp.ACCOUNT_PATTERN");
+
+				if (!result6) {
 					tAccountNum.setText("");
 					JOptionPane.showMessageDialog(this, "Enter valid Account no. ....");
 					validAccN = RegisterValid.INVALID_ENTER;

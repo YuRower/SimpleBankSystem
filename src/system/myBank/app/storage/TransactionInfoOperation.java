@@ -6,17 +6,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import system.myBank.app.entity.Transaction;
 import system.myBank.app.entity.TransactionInfo;
 
 public class TransactionInfoOperation extends AbstractBankOperation<TransactionInfo> {
 	ArrayList<TransactionInfo> match;
+	static Logger logger = Logger.getLogger(TransactionInfoOperation.class);
 
 	@Override
 	public void addInfo(TransactionInfo obj) {
 		try {
-			System.out.println(obj.getClass().getSimpleName());
-
+			logger.info("addInfo");
 			FileInputStream fin2 = new FileInputStream("BankTrans.dat");
 			ObjectInputStream oin2 = new ObjectInputStream(fin2);
 			match = (ArrayList<TransactionInfo>) oin2.readObject();

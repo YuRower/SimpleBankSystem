@@ -11,13 +11,17 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
+
 import system.myBank.app.entity.Registration;
 
 public class SearchDetailStorage extends JFrame {
 	int index;
+	static Logger logger = Logger.getLogger(SearchDetailStorage.class);
 
 	public SearchDetailStorage(int index) {
 		super("Search Window");
+		logger.info("SearchDetailStorage");
 		String heading[] = { "Name", "DOB", "Gender", "Phoneno", "Address", "emailid", "accounttype", "depositamount",
 				"accountno" };
 		String data[][] = new String[20][9];

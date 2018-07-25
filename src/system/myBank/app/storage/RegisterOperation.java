@@ -6,10 +6,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import system.myBank.app.entity.Registration;
 
 public class RegisterOperation extends AbstractBankOperation<Registration> {
 	private final String REGISTR_FILE = "Register.dat";
+	static Logger logger = Logger.getLogger(RegisterOperation.class);
 
 	ArrayList<Registration> listReg;
 
@@ -17,7 +20,7 @@ public class RegisterOperation extends AbstractBankOperation<Registration> {
 
 	public int searchInfoID(Registration rn) {
 		try {
-			System.out.println("searchInfoID");
+			logger.info("searchInfoID");
 			FileInputStream fin = new FileInputStream(REGISTR_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);
 			listReg = (ArrayList<Registration>) oin.readObject();
@@ -40,7 +43,7 @@ public class RegisterOperation extends AbstractBankOperation<Registration> {
 
 	public void removeInfo(int index) {
 		try {
-			System.out.println("removeInfo");
+			logger.info("removeInfo");
 
 			FileInputStream fin2 = new FileInputStream(REGISTR_FILE);
 			ObjectInputStream oin2 = new ObjectInputStream(fin2);
@@ -60,7 +63,7 @@ public class RegisterOperation extends AbstractBankOperation<Registration> {
 
 	public void addInfo(Registration rg1) {
 		try {
-			System.out.println("addInfo");
+			logger.info("addInfo");
 
 			FileInputStream fin = new FileInputStream(REGISTR_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);

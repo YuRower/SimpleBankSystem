@@ -8,13 +8,15 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
+
 import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 
 public class TransactionOperation extends AbstractBankOperation<Transaction> {
 	ArrayList<Transaction> listTransaction;
 	private final int OVERDRAFT = -100;
-	private int crdt;
+	static Logger logger = Logger.getLogger(TransactionOperation.class);
 
 	private final String TRANSACTION_FILE = "Banking.dat";
 
@@ -27,8 +29,7 @@ public class TransactionOperation extends AbstractBankOperation<Transaction> {
 
 	public void withdrawDetailStorage(Transaction cr, int index) {
 		try {
-			System.out.println("WithdrawDetailStorage trans");
-
+			logger.info("withdrawDetailStorage");
 			FileInputStream fin = new FileInputStream(TRANSACTION_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);
 			listTransaction = (ArrayList<Transaction>) oin.readObject();
@@ -64,7 +65,7 @@ public class TransactionOperation extends AbstractBankOperation<Transaction> {
 
 	public void depositDetailStorage(Transaction cr, int index) {
 		try {
-			System.out.println("DepositDetailStorage trans");
+			logger.info("depositDetailStorage");
 
 			FileInputStream fin = new FileInputStream(TRANSACTION_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);
@@ -93,7 +94,7 @@ public class TransactionOperation extends AbstractBankOperation<Transaction> {
 	@Override
 	public void addInfo(Transaction obj) {
 		try {
-			System.out.println("addInfo trans");
+			logger.debug("addInfo");
 
 			FileInputStream fin = new FileInputStream(TRANSACTION_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);
@@ -116,7 +117,7 @@ public class TransactionOperation extends AbstractBankOperation<Transaction> {
 	@Override
 	public void removeInfo(int index) {
 		try {
-			System.out.println("removeInfo trans");
+			logger.debug("removeInfo");
 
 			FileInputStream fin = new FileInputStream(TRANSACTION_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);
@@ -136,7 +137,7 @@ public class TransactionOperation extends AbstractBankOperation<Transaction> {
 	@Override
 	public int searchInfoID(Transaction obj) {
 		try {
-			System.out.println("searchInfoID trans");
+			logger.debug("searchInfoID");
 			FileInputStream fin = new FileInputStream(TRANSACTION_FILE);
 			ObjectInputStream oin = new ObjectInputStream(fin);
 			folder1 = (ArrayList<Transaction>) oin.readObject();

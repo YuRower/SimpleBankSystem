@@ -18,6 +18,9 @@ import org.apache.log4j.xml.DOMConfigurator;
 import system.myBank.app.security.PasswordStorage;
 import system.myBank.app.security.PasswordStorage.CannotPerformOperationException;
 import system.myBank.app.security.PasswordStorage.InvalidHashException;
+import system.myBank.app.security.Regexp;
+
+import org.apache.log4j.BasicConfigurator;
 
 enum Status {
 	VALID_NAME, VALID_PASSWORD, GRANTED, DENIED;
@@ -36,14 +39,10 @@ public class Administrator extends JFrame implements ActionListener {
 	Administrator admin, admin1;
 	static Logger logger = Logger.getLogger(Administrator.class);
 
-	private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
-	private static final String PASSWORD_PATTERN = "((?=.*[a-z])(?=.*d)(?=.*[@#$%])(?=.*[A-Z]).{6,16})";
-	/*static {
-		new DOMConfigurator().doConfigure("log4j2.xml",
-				LogManager.getLoggerRepository());
-	}*/
+	
 	public Administrator(String title) {
 		super(title);
+		BasicConfigurator.configure();
 
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(4, 2));
@@ -88,7 +87,7 @@ public class Administrator extends JFrame implements ActionListener {
 		if (ae.getSource() == okButton) {
 			do {
 				String id = idField.getText();
-				pattern = Pattern.compile(USERNAME_PATTERN);
+				pattern = Pattern.compile(Regexp.USERNAME_PATTERN);
 				boolean correctName = validate(id);
 				if (!correctName) {
 					idField.setText("");
@@ -98,7 +97,7 @@ public class Administrator extends JFrame implements ActionListener {
 				}
 
 				String password = String.valueOf(passwordField.getPassword());
-				pattern = Pattern.compile(PASSWORD_PATTERN);
+				pattern = Pattern.compile(Regexp.PASSWORD_PATTERN);
 				boolean correctPassword = validate(password);
 
 				if (!correctPassword) {

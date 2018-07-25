@@ -5,6 +5,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
+
+import system.myBank.app.Administrator;
 import system.myBank.app.entity.Transaction;
 
 import java.awt.BorderLayout;
@@ -14,9 +17,11 @@ import java.util.*;
 
 public class AmountDetailStorage extends JFrame {
 	ArrayList<Transaction> folder;
+	static Logger logger = Logger.getLogger(AmountDetailStorage.class);
 
 	public AmountDetailStorage() {
-		super("Amount Details");
+		super("Amount Details ");
+		logger.info("Start AmountDetailStorage ");
 		String heading[] = { "DepositAmount", "AccountN" };
 		String data[][] = new String[20][2];
 		folder = new ArrayList<Transaction>();

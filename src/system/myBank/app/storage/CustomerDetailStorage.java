@@ -5,6 +5,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
+
 import system.myBank.app.entity.Registration;
 import system.myBank.app.entity.Transaction;
 
@@ -17,9 +19,11 @@ public class CustomerDetailStorage extends JFrame {
 
 	public String data[][] = new String[30][9];
 	public static String tmp;
+	static Logger logger = Logger.getLogger(CustomerDetailStorage.class);
 
 	public CustomerDetailStorage() {
 		super("Account Details");
+		logger.info("start CustomerDetailStorage");
 		String heading[] = { "Name", "DOB", "Gender", "Phoneno", "Address", "EmailId", "AccountType", "DepositAmount",
 				"AccountN" };
 

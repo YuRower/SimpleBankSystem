@@ -1,0 +1,44 @@
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1532497678317" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.storage.RegisterOperation" timestamp="1532497711155" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[searchInfoID]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.storage.RegisterOperation" timestamp="1532497728879" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[searchInfoID]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1532497957439" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.storage.RegisterOperation" timestamp="1532497973523" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[searchInfoID]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.info.RegisterInfo" timestamp="1532497974399" level="DEBUG" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[falseRegexp.NAME_PATTERN]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.info.RegisterInfo" timestamp="1532497975396" level="DEBUG" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[falseRegexp.PHONE_PATTERN]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.info.RegisterInfo" timestamp="1532497976124" level="DEBUG" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[falseRegexp.ADDRESS_PATTERN]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.info.RegisterInfo" timestamp="1532497976660" level="DEBUG" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[falseRegexp.EMAIL_PATTERN]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.info.RegisterInfo" timestamp="1532497977164" level="DEBUG" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[trueRegexp.ACCOUNT_PATTERN]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.info.RegisterInfo" timestamp="1532497977165" level="DEBUG" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[trueRegexp.ACCOUNT_PATTERN]]></log4j:message>
+</log4j:event>
+

@@ -10,11 +10,17 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
+
 import system.myBank.app.entity.TransactionInfo;
 
 public class HistoryTransactionDetailStorage extends JFrame {
+	static Logger logger = Logger.getLogger(HistoryTransactionDetailStorage.class);
+
 	public HistoryTransactionDetailStorage() {
 		super("Account Details");
+		logger.info("start HistoryTransactionDetailStorage ");
+
 		String heading[] = { "N", "Withdarw", "Deposit" };
 		String data[][] = new String[30][3];
 		ArrayList<TransactionInfo> list = new ArrayList<TransactionInfo>();
