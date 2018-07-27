@@ -36,27 +36,18 @@ public class SignIn extends JFrame implements ActionListener {
 	static {
 		new DOMConfigurator().doConfigure("log4j.xml", LogManager.getLoggerRepository());
 	}
-	
+
 	static Logger logger = Logger.getLogger(SignIn.class);
 
 	public static boolean accessGranted;
-	private final JLabel author;
-	private final JLabel welcome;
-
-	private final JMenuItem test;
-	private final JMenuItem atm;
-	private final JButton btnAtm;
+	private final JLabel author,welcome;
 	private BufferedImage bg;
-	private final JMenuItem chat;
-	private final JMenuItem tchat;
 	private JPopupMenu popMenu = new JPopupMenu();
 	private final JMenu menuEdit;
 	private JDesktopPane desktop = new JDesktopPane();
+	private final JMenuItem withdraw, history, transfer, deposit, create, info, delete,chat,test;
 
-	private final JMenuItem withdraw, history, transfer, deposit, create, info, delete, open, infor, depositMoney,
-			withdrawMoney, delCustomer, draft, transferItem;
 	private JMenuBar bar;
-	private JButton btnChat;
 	private java.util.Date currDate = new java.util.Date();
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
 	private String d = sdf.format(currDate);
@@ -66,6 +57,10 @@ public class SignIn extends JFrame implements ActionListener {
 	private ChatClient myChat;
 	Image img;
 	Image bgimage = null;
+
+	private JMenu language;
+
+	private JMenuItem rus_language;
 
 	public SignIn(String title) {
 		super(title);
@@ -140,10 +135,14 @@ public class SignIn extends JFrame implements ActionListener {
 		menuEdit.add(transfer);
 
 		menuDelete = new JMenu("Delete Account");
-
 		delete = new JMenuItem("Delete Customer");
 		delete.addActionListener(this);
 		menuDelete.add(delete);
+
+		language = new JMenu("Language1");
+		rus_language = new JMenuItem("RUS");
+		rus_language.addActionListener(this);
+		language.add(rus_language);
 
 		menuTest = new JMenu("Test ATM");
 		test = new JMenuItem("ATM");
@@ -161,37 +160,7 @@ public class SignIn extends JFrame implements ActionListener {
 		bar.add(menuInfo);
 		bar.add(menuTest);
 		bar.add(menuChat);
-
-		open = new JMenuItem("New Account");
-		open.addActionListener(this);
-		infor = new JMenuItem("Info");
-		infor.addActionListener(this);
-		depositMoney = new JMenuItem("Deposit Money");
-		depositMoney.addActionListener(this);
-		withdrawMoney = new JMenuItem("Withdraw Money");
-		withdrawMoney.addActionListener(this);
-		delCustomer = new JMenuItem("Delete Customer");
-		delCustomer.addActionListener(this);
-
-		draft = new JMenuItem("Draft");
-		draft.addActionListener(this);
-		transferItem = new JMenuItem("Transfer");
-		transferItem.addActionListener(this);
-		atm = new JMenuItem("atm");
-		atm.addActionListener(this);
-		tchat = new JMenuItem("chat");
-		tchat.addActionListener(this);
-
-		popMenu.add(open);
-		popMenu.add(infor);
-		popMenu.add(depositMoney);
-		popMenu.add(withdrawMoney);
-		popMenu.add(delCustomer);
-
-		popMenu.add(draft);
-		popMenu.add(transferItem);
-		popMenu.add(atm);
-		popMenu.add(tchat);
+		bar.add(language);
 
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent me) {
@@ -207,14 +176,6 @@ public class SignIn extends JFrame implements ActionListener {
 					popMenu.show(me.getComponent(), me.getX(), me.getY());
 			}
 		});
-
-		btnAtm = new JButton();
-
-		btnAtm.setToolTipText("ATM");
-		btnAtm.addActionListener(this);
-		btnChat = new JButton();
-		btnChat.setToolTipText("Chat");
-		btnChat.addActionListener(this);
 
 		author = new JLabel(" " + "BankSystem ", Label.LEFT);
 		author.setForeground(Color.black);
@@ -256,7 +217,22 @@ public class SignIn extends JFrame implements ActionListener {
 					new ATM().setVisible(true);
 				}
 			});
-
+		}else if (marker==rus_language) {
+			
+			String language_country="RU";
+			String country="RU";
+			Locale current = new Locale(language_country, country);
+			ResourceBundle rb = ResourceBundle.getBundle("property.text", current);
+			String s1 = rb.getString("menuCreate");
+			/*String s2 = rb.getString("create");
+			String s3 = rb.getString("menuInfo");
+			String s4 = rb.getString("info");
+			String s5 = rb.getString("menuEdit");
+			String s6 = rb.getString("deposit");
+			String s7 = rb.getString("withdraw");
+			String s8 = rb.getString("history");*/
+			withdraw.setText(s1);
+		
 		} else if (marker == create) {
 			new RegisterInfo("Registration");
 		}
