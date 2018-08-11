@@ -9,3 +9,32 @@
 25.07.2018 08:52:56 [AWT-EventQueue-0] DEBUG system.myBank.app.info.RegisterInfo - falseRegexp.EMAIL_PATTERN
 25.07.2018 08:52:57 [AWT-EventQueue-0] DEBUG system.myBank.app.info.RegisterInfo - trueRegexp.ACCOUNT_PATTERN
 25.07.2018 08:52:57 [AWT-EventQueue-0] DEBUG system.myBank.app.info.RegisterInfo - trueRegexp.ACCOUNT_PATTERN
+11.08.2018 17:08:47 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:09:49 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:15:38 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:19:17 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:19:38 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:21:08 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:21:27 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:22:46 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:23:04 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:23:55 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:24:26 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:27:53 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:38:12 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:44:04 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:44:06 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:44:25 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 17:44:26 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:16:08 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:16:11 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:23:15 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:23:18 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:23:25 [AWT-EventQueue-0] INFO  system.myBank.app.storage.CustomerDetailStorage - start CustomerDetailStorage
+11.08.2018 18:28:30 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:28:33 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:28:35 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:31:21 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:31:25 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:32:45 [main] INFO  system.myBank.app.SignIn - Start app
+11.08.2018 18:32:47 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app

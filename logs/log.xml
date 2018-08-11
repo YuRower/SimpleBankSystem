@@ -42,3 +42,119 @@
 <log4j:message><![CDATA[trueRegexp.ACCOUNT_PATTERN]]></log4j:message>
 </log4j:event>
 
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533996527168" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533996589438" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533996938878" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997157950" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997178421" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997268389" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997287794" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997366954" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997384863" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997435148" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997466325" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533997673009" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533998292982" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533998644465" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533998646981" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533998665057" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1533998666653" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534000568971" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534000571201" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534000995806" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534000998851" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.storage.CustomerDetailStorage" timestamp="1534001005359" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[start CustomerDetailStorage]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534001310444" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534001313090" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534001315102" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534001481413" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534001485623" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534001565614" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1534001567611" level="INFO" thread="AWT-EventQueue-0">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+

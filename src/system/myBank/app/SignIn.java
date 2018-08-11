@@ -16,6 +16,7 @@ import system.myBank.app.info.TransferInfo;
 import system.myBank.app.info.WithdrawInfo;
 import system.myBank.app.storage.CustomerDetailStorage;
 import system.myBank.app.storage.HistoryTransactionDetailStorage;
+import system.myBank.app.utill.Translate;
 import system.myBank.chat.ChatClient;
 import system.myBank.chat.server.ChatServer;
 
@@ -40,32 +41,27 @@ public class SignIn extends JFrame implements ActionListener {
 	static Logger logger = Logger.getLogger(SignIn.class);
 
 	public static boolean accessGranted;
-	private final JLabel author,welcome;
+	private final JLabel author, welcome;
 	private BufferedImage bg;
 	private JPopupMenu popMenu = new JPopupMenu();
 	private final JMenu menuEdit;
 	private JDesktopPane desktop = new JDesktopPane();
-	private final JMenuItem withdraw, history, transfer, deposit, create, info, delete,chat,test;
-
+	protected JMenuItem withdraw, history, transfer, deposit, create, info, delete, chat, test, eng_language,
+			rus_language;
 	private JMenuBar bar;
 	private java.util.Date currDate = new java.util.Date();
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
 	private String d = sdf.format(currDate);
 
-	private JMenu menuCreate, menuInfo, menuDelete, menuTest, menuChat;
+	private JMenu menuCreate, menuInfo, menuDelete, menuTest, menuChat, language;
 
 	private ChatClient myChat;
 	Image img;
 	Image bgimage = null;
 
-	private JMenu language;
-
-	private JMenuItem rus_language;
-
 	public SignIn(String title) {
 		super(title);
 		logger.info("Start app");
-
 		try {
 			bg = ImageIO.read(new File("background.jpg"));
 		} catch (IOException e) {
@@ -115,7 +111,7 @@ public class SignIn extends JFrame implements ActionListener {
 		info.addActionListener(this);
 		menuInfo.add(info);
 
-		menuEdit = new JMenu("Operation");
+		menuEdit = new JMenu("Operations");
 		deposit = new JMenuItem("Deposit Money");
 		deposit.addActionListener(this);
 		withdraw = new JMenuItem("Withdraw Money");
@@ -139,10 +135,14 @@ public class SignIn extends JFrame implements ActionListener {
 		delete.addActionListener(this);
 		menuDelete.add(delete);
 
-		language = new JMenu("Language1");
+		language = new JMenu("Language");
 		rus_language = new JMenuItem("RUS");
+		eng_language = new JMenuItem("ENG");
+		eng_language.addActionListener(this);
+
 		rus_language.addActionListener(this);
 		language.add(rus_language);
+		language.add(eng_language);
 
 		menuTest = new JMenu("Test ATM");
 		test = new JMenuItem("ATM");
@@ -217,22 +217,12 @@ public class SignIn extends JFrame implements ActionListener {
 					new ATM().setVisible(true);
 				}
 			});
-		}else if (marker==rus_language) {
-			
-			String language_country="RU";
-			String country="RU";
-			Locale current = new Locale(language_country, country);
-			ResourceBundle rb = ResourceBundle.getBundle("property.text", current);
-			String s1 = rb.getString("menuCreate");
-			/*String s2 = rb.getString("create");
-			String s3 = rb.getString("menuInfo");
-			String s4 = rb.getString("info");
-			String s5 = rb.getString("menuEdit");
-			String s6 = rb.getString("deposit");
-			String s7 = rb.getString("withdraw");
-			String s8 = rb.getString("history");*/
-			withdraw.setText(s1);
-		
+		} else if (marker == rus_language) {
+			Translate.translateMenu();
+
+		} else if (marker == eng_language) {
+			Translate.translateMenu();
+
 		} else if (marker == create) {
 			new RegisterInfo("Registration");
 		}
@@ -278,6 +268,78 @@ public class SignIn extends JFrame implements ActionListener {
 		} else if (reply == JOptionPane.NO_OPTION) {
 			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		}
+	}
+
+	public JMenuItem getEng_language() {
+		return eng_language;
+	}
+
+	public JMenuItem getWithdraw() {
+		return withdraw;
+	}
+
+	public JMenu getMenuCreate() {
+		return menuCreate;
+	}
+
+	public JMenuItem getCreate() {
+		return create;
+	}
+
+	public JMenuItem getHistory() {
+		return history;
+	}
+
+	public JMenu getMenuTest() {
+		return menuTest;
+	}
+
+	public JMenu getLanguage() {
+		return language;
+	}
+
+	public JMenuItem getTransfer() {
+		return transfer;
+	}
+
+	public JMenuItem getDeposit() {
+		return deposit;
+	}
+
+	public JMenuItem getInfo() {
+		return info;
+	}
+
+	public JMenuItem getDelete() {
+		return delete;
+	}
+
+	public JMenuItem getChat() {
+		return chat;
+	}
+
+	public JMenuItem getTest() {
+		return test;
+	}
+
+	public JMenu getMenuInfo() {
+		return menuInfo;
+	}
+
+	public JMenu getMenuDelete() {
+		return menuDelete;
+	}
+
+	public JMenu getMenuChat() {
+		return menuChat;
+	}
+
+	public JMenu getMenuEdit() {
+		return menuEdit;
+	}
+
+	public JMenuItem getRus_language() {
+		return rus_language;
 	}
 
 	public static void main(String args[]) {

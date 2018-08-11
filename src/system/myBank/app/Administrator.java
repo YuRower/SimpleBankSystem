@@ -15,10 +15,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import system.myBank.app.security.PasswordStorage;
-import system.myBank.app.security.PasswordStorage.CannotPerformOperationException;
-import system.myBank.app.security.PasswordStorage.InvalidHashException;
-import system.myBank.app.security.Regexp;
+import system.myBank.app.utill.PasswordStorage;
+import system.myBank.app.utill.Regexp;
+import system.myBank.app.utill.PasswordStorage.CannotPerformOperationException;
+import system.myBank.app.utill.PasswordStorage.InvalidHashException;
 
 import org.apache.log4j.BasicConfigurator;
 
