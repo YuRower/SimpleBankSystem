@@ -218,10 +218,10 @@ public class SignIn extends JFrame implements ActionListener {
 				}
 			});
 		} else if (marker == rus_language) {
-			Translate.translateMenu();
+			Translate.translateMenu_RUS();
 
 		} else if (marker == eng_language) {
-			Translate.translateMenu();
+			Translate.translateMenu_ENG();
 
 		} else if (marker == create) {
 			new RegisterInfo("Registration");

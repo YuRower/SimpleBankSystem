@@ -38,3 +38,10 @@
 11.08.2018 18:31:25 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
 11.08.2018 18:32:45 [main] INFO  system.myBank.app.SignIn - Start app
 11.08.2018 18:32:47 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+14.08.2018 22:47:58 [main] INFO  system.myBank.app.SignIn - Start app
+14.08.2018 22:53:20 [main] INFO  system.myBank.app.SignIn - Start app
+14.08.2018 22:53:22 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+14.08.2018 22:53:24 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+14.08.2018 22:55:17 [main] INFO  system.myBank.app.SignIn - Start app
+14.08.2018 22:55:19 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+14.08.2018 22:55:21 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
