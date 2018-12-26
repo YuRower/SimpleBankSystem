@@ -45,3 +45,6 @@
 14.08.2018 22:55:17 [main] INFO  system.myBank.app.SignIn - Start app
 14.08.2018 22:55:19 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
 14.08.2018 22:55:21 [AWT-EventQueue-0] INFO  system.myBank.app.SignIn - Start app
+13.12.2018 21:28:10 [main] INFO  system.myBank.app.SignIn - Start app
+13.12.2018 21:28:10 [main] INFO  system.myBank.app.SignIn - Start app
+13.12.2018 21:29:31 [main] INFO  system.myBank.app.SignIn - Start app

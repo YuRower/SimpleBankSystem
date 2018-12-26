@@ -186,3 +186,15 @@
 <log4j:message><![CDATA[Start app]]></log4j:message>
 </log4j:event>
 
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1544729290162" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1544729290163" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="system.myBank.app.SignIn" timestamp="1544729371379" level="INFO" thread="main">
+<log4j:message><![CDATA[Start app]]></log4j:message>
+</log4j:event>
+
