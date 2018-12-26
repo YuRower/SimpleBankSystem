@@ -1,2 +1,2 @@
 # SimpleBankSystem
-refactoring old project 
+refactoring old desktop project 
